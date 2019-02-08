@@ -115,10 +115,11 @@
                     <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles"
                            disabled="disabled">
                         <label for="ps-miles" style="display: inline"><span>miles from</span></label>
-                    <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled">
+                    <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled"
+                           onchange="toggleNearByZipCode()">
                         <label for="ps-here-radio" style="display: inline">Here</label><br>
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
-                           disabled="disabled">
+                           disabled="disabled" onchange="toggleNearByZipCode()">
                         <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
                                id="ps-zip-code" disabled="disabled">
 
@@ -155,7 +156,23 @@
             document.getElementById('ps-miles').disabled = !isNearByChecked;
             document.getElementById('ps-here-radio').disabled = !isNearByChecked;
             document.getElementById('ps-zip-radio').disabled = !isNearByChecked;
-            document.getElementById('ps-zip-code').disabled = !isNearByChecked;
+            document.getElementById('ps-zip-code').disabled = document.getElementById('ps-zip-radio').checked;
+            if(document.getElementById('ps-zip-radio').checked){
+                document.getElementById('ps-zip-code').disabled = false;
+            }else{
+                document.getElementById('ps-zip-code').disabled = true;
+            }
+        }
+    </script>
+
+    <!-- JS to toggle the zip code text box -->
+    <script type="text/javascript">
+        function toggleNearByZipCode() {
+            if(document.getElementById('ps-zip-radio').checked){
+                document.getElementById('ps-zip-code').disabled = false;
+            }else{
+                document.getElementById('ps-zip-code').disabled = true;
+            }
         }
     </script>
 
