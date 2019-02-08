@@ -124,7 +124,7 @@
                 </fieldset>
                 <footer>
                     <input type="submit" value="Search">
-                    <input type="reset" value="Clear">
+                    <input type="reset" value="Clear" onclick="clearPSForm()">
                 </footer>
             </form>
         </div>
@@ -155,6 +155,31 @@
         }
     </script>
 
+    <!--  JS to reset the form data when clear pressed -->
+    <script type="text/javascript">
+        function clearPSForm() {
+            document.getElementById('ps-keyword').innerText = '';
+            document.getElementById('ps-category').value = -1;
+            document.getElementById('ps-condition-new').checked = false;
+            document.getElementById('ps-condition-used').checked = false;
+            document.getElementById('ps-condition-unspecified').checked = false;
+            document.getElementById('ps-shipping-free').checked = false;
+            document.getElementById('ps-shipping-local').checked = false;
+
+            let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
+            if(isNearByChecked){
+                document.getElementById('ps-enable-nearby').checked = false;
+                document.getElementById('ps-miles').disabled = true;
+                document.getElementById('ps-miles').innerText = '10';
+                document.getElementById('ps-here-radio').disabled = true;
+                document.getElementById('ps-here-radio').checked = true;
+                document.getElementById('ps-zip-radio').disabled = true;
+                document.getElementById('ps-zip-radio').checked = false;
+                document.getElementById('ps-zip-code').disabled = true;
+                document.getElementById('ps-zip-code').innerText = '';
+            }
+        }
+    </script>
 
     </body>
 </html>
