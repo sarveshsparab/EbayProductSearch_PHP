@@ -122,8 +122,7 @@
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
                            disabled="disabled" onchange="toggleNearByZipCode()">
                         <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                               id="ps-zip-code" disabled="disabled">
-
+                               id="ps-zip-code" disabled="disabled" required>
                 </fieldset>
                 <footer>
                     <input type="submit" value="Search">
