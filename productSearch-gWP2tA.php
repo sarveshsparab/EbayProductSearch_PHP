@@ -6,6 +6,16 @@
  */
 ?>
 
+<?php
+// PHP to fetch PSForm data
+if(isset($_POST['ps-submit'])){
+    if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
+        $zipcode = $_POST['ps-zip-code'];
+    }
+}
+
+?>
+
 <html>
     <head>
         <title>Product Search</title>
@@ -79,14 +89,15 @@
     <body>
         <!-- Product search form -->
         <div id="form-container" class="form-container">
-            <form id="ps-form" class="ps-form">
+            <form id="ps-form" class="ps-form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>"
+                  onsubmit="return validatePSForm()">
                 <header>Product Search</header>
                 <fieldset>
                     <label><span>Keyword</span>
-                        <input type="text" id="ps-keyword" required>
+                        <input type="text" id="ps-keyword" name="ps-keyword" required>
                     </label>
                     <label><span>Category</span>
-                        <select id="ps-category">
+                        <select id="ps-category" name="ps-category">
                             <option selected value="-1">All Categories</option>
                             <option value="0" disabled="disabled">--------------------------------</option>
                             <option value="550">Art</option>
@@ -100,20 +111,20 @@
                         </select>
                     </label>
                     <label><span>Condition</span>
-                        <input type="checkbox" id="ps-condition-new">New
-                        <input type="checkbox" id="ps-condition-used">Used
-                        <input type="checkbox" id="ps-condition-unspecified">Unspecified
+                        <input type="checkbox" id="ps-condition-new" name="ps-condition-new">New
+                        <input type="checkbox" id="ps-condition-used" name="ps-condition-used">Used
+                        <input type="checkbox" id="ps-condition-unspecified" name="ps-condition-unspecified">Unspecified
                     </label>
                     <label><span>Shipping Options</span>
-                        <input type="checkbox" id="ps-shipping-local">Local Pickup
-                        <input type="checkbox" id="ps-shipping-free">Free Shipping
+                        <input type="checkbox" id="ps-shipping-local" name="ps-shipping-local">Local Pickup
+                        <input type="checkbox" id="ps-shipping-free" name="ps-shipping-free">Free Shipping
                     </label>
                     <label style="display: inline">
-                        <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby"
+                        <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby" name="ps-enable-nearby"
                                onchange="toggleNearByState()">
                             <span>Enable Nearby Search</span>
                     </label>
-                    <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles"
+                    <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles" name="ps-miles"
                            disabled="disabled">
                         <label for="ps-miles" style="display: inline"><span>miles from</span></label>
                     <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled"
@@ -122,11 +133,11 @@
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
                            disabled="disabled" onchange="toggleNearByZipCode()">
                         <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                               id="ps-zip-code" disabled="disabled" required>
+                               id="ps-zip-code" name="ps-zip-code" disabled="disabled" required>
                 </fieldset>
                 <footer>
-                    <input type="submit" value="Search">
-                    <input type="reset" value="Clear" onclick="clearPSForm()">
+                    <input type="submit" value="Search" id="ps-submit" name="ps-submit">
+                    <input type="reset" value="Clear" onclick="clearPSForm()" id="ps-clear" name="ps-clear">
                 </footer>
             </form>
         </div>
@@ -190,7 +201,7 @@
             document.getElementById('ps-shipping-local').checked = false;
 
             let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
-            if(isNearByChecked){
+            if (isNearByChecked) {
                 document.getElementById('ps-enable-nearby').checked = false;
                 document.getElementById('ps-miles').disabled = true;
                 document.getElementById('ps-miles').innerText = '10';
@@ -204,5 +215,11 @@
         }
     </script>
 
+    <!-- JS to handle submit button click -->
+    <script>
+        function validatePSForm() {
+
+        }
+    </script>
     </body>
 </html>
