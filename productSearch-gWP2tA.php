@@ -53,11 +53,17 @@
             .search-form footer{
                 margin-top: 10px;
             }
+
+            /* Disabled states formatting */
             input:disabled {
-                background: #dddddd;
+                background: #efefef;
+                color: #a0a0a0;
+            }
+            input:disabled::placeholder {
+                color: #a0a0a0;
             }
             input:disabled+label {
-                color: #ccc;
+                color: #8c8c8c;
             }
 
             .listings-container{
