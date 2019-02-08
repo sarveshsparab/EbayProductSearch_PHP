@@ -216,10 +216,21 @@ if(isset($_POST['ps-submit'])){
     </script>
 
     <!-- JS to handle submit button click -->
-    <script>
+    <script type="text/javascript">
         function validatePSForm() {
+            var formState = true;
 
+            
+
+            return formState;
         }
     </script>
+
+        <!-- JS to validate zip code -->
+        <script type="text/javascript">
+            function isZipCodeValid(zcVal) {
+                return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zcVal)
+            }
+        </script>
     </body>
 </html>
