@@ -36,10 +36,11 @@
                 border-top: 1px solid rgba(25, 25, 25, 0.6);
                 margin-left: 10px;
                 margin-right: 10px;
+                padding-top: 10px;
             }
             .search-form fieldset label{
                 display: block;
-                margin-top: 10px;
+                margin-bottom: 10px;
             }
             .search-form fieldset label span{
                 font-weight: bold;
@@ -105,19 +106,21 @@
                         <input type="checkbox" id="ps-shipping-local">Local Pickup
                         <input type="checkbox" id="ps-shipping-free">Free Shipping
                     </label>
-                    <label>
-                        <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby">
+                    <label style="display: inline">
+                        <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby"
+                               onchange="toggleNearByState()">
                             <span>Enable Nearby Search</span>
-                        <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles"
-                               disabled="disabled">
-                            <label for="ps-miles" style="display: inline"><span>miles from</span></label>
-                        <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled">
-                            <label for="ps-here-radio" style="display: inline">Here</label><br>
-                        <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
-                               disabled="disabled">
-                            <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                                   id="ps-zip-code" disabled="disabled">
                     </label>
+                    <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles"
+                           disabled="disabled">
+                        <label for="ps-miles" style="display: inline"><span>miles from</span></label>
+                    <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled">
+                        <label for="ps-here-radio" style="display: inline">Here</label><br>
+                    <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
+                           disabled="disabled">
+                        <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
+                               id="ps-zip-code" disabled="disabled">
+
                 </fieldset>
                 <footer>
                     <input type="submit" value="Search">
@@ -139,6 +142,19 @@
 
             </div>
         </div>
+
+
+    <!--  JS Script for search form validation and enable nearby search feature  -->
+    <script type="text/javascript">
+        function toggleNearByState() {
+            let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
+            document.getElementById('ps-miles').disabled = !isNearByChecked;
+            document.getElementById('ps-here-radio').disabled = !isNearByChecked;
+            document.getElementById('ps-zip-radio').disabled = !isNearByChecked;
+            document.getElementById('ps-zip-code').disabled = !isNearByChecked;
+        }
+    </script>
+
 
     </body>
 </html>
