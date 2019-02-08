@@ -72,7 +72,15 @@
                     </label>
                     <label><span>Category</span>
                         <select id="ps-category">
-                            <option selected>All Categories</option>
+                            <option selected value="0">All Categories</option>
+                            <option value="550">Art</option>
+                            <option value="2984">Baby</option>
+                            <option value="267">Books</option>
+                            <option value="11450">Clothing, Shoes & Accessories</option>
+                            <option value="58058">Computers/Tablets & Networking</option>
+                            <option value="26395">Health & Beauty</option>
+                            <option value="11233">Music</option>
+                            <option value="1249">Video Games & Consoles</option>
                         </select>
                     </label>
                     <label><span>Condition</span>
