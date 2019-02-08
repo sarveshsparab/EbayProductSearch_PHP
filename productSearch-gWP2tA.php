@@ -20,38 +20,38 @@
                 height: 285px;
                 width: 600px;
             }
-            .search-form{
+            .ps-form{
 
             }
-            .search-form header, footer{
+            .ps-form header, footer{
                 text-align: center;
             }
-            .search-form header{
+            .ps-form header{
                 font-style: italic;
                 font-size: 30px;
                 margin-bottom: 7px;
             }
-            .search-form fieldset{
+            .ps-form fieldset{
                 border: none;
                 border-top: 1px solid rgba(25, 25, 25, 0.6);
                 margin-left: 10px;
                 margin-right: 10px;
                 padding-top: 10px;
             }
-            .search-form fieldset label{
+            .ps-form fieldset label{
                 display: block;
                 margin-bottom: 10px;
             }
-            .search-form fieldset label span{
+            .ps-form fieldset label span{
                 font-weight: bold;
             }
-            .search-form fieldset select{
+            .ps-form fieldset select{
                 width: 225px;
             }
-            .search-form fieldset input[type="checkbox"]{
+            .ps-form fieldset input[type="checkbox"]{
                 margin-left: 25px;
             }
-            .search-form footer{
+            .ps-form footer{
                 margin-top: 10px;
             }
 
@@ -77,8 +77,9 @@
     </head>
 
     <body>
+        <!-- Product search form -->
         <div id="form-container" class="form-container">
-            <form id="search-form" class="search-form">
+            <form id="ps-form" class="ps-form">
                 <header>Product Search</header>
                 <fieldset>
                     <label><span>Keyword</span>
@@ -128,6 +129,9 @@
                 </footer>
             </form>
         </div>
+
+
+
         <div id="listings-container"  class="listings-container">
 
         </div>
