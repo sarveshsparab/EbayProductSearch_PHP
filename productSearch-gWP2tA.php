@@ -72,7 +72,7 @@
                     </label>
                     <label><span>Category</span>
                         <select id="ps-category">
-                            <option selected value="0">All Categories</option>
+                            <option selected value="-1">All Categories</option>
                             <option value="550">Art</option>
                             <option value="2984">Baby</option>
                             <option value="267">Books</option>
@@ -95,13 +95,15 @@
                     <label>
                         <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby">
                             <span>Enable Nearby Search</span>
-                        <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles">
-                            <span>miles from</span>
-                        <input type="radio" id="ps-here-radio" name="nearby-location" checked>
-                            Here<br>
-                        <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location">
-                            <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                                   id="ps-zip-code">
+                        <div style="display: inline">
+                            <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles">
+                                <span>miles from</span>
+                            <input type="radio" id="ps-here-radio" name="nearby-location" checked>
+                                Here<br>
+                            <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location">
+                                <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
+                                       id="ps-zip-code">
+                        </div>
                     </label>
                 </fieldset>
                 <footer>
