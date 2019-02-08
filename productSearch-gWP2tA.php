@@ -68,7 +68,7 @@
                 <header>Product Search</header>
                 <fieldset>
                     <label><span>Keyword</span>
-                        <input type="text" id="ps-keyword">
+                        <input type="text" id="ps-keyword" required>
                     </label>
                     <label><span>Category</span>
                         <select id="ps-category">
