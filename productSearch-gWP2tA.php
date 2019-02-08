@@ -53,6 +53,13 @@
             .search-form footer{
                 margin-top: 10px;
             }
+            input:disabled {
+                background: #dddddd;
+            }
+            input:disabled+label {
+                color: #ccc;
+            }
+
             .listings-container{
                 background-color: yellow;
             }
@@ -95,15 +102,15 @@
                     <label>
                         <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby">
                             <span>Enable Nearby Search</span>
-                        <div style="display: inline">
-                            <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles">
-                                <span>miles from</span>
-                            <input type="radio" id="ps-here-radio" name="nearby-location" checked>
-                                Here<br>
-                            <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location">
-                                <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                                       id="ps-zip-code">
-                        </div>
+                        <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles"
+                               disabled="disabled">
+                            <label for="ps-miles" style="display: inline"><span>miles from</span></label>
+                        <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled">
+                            <label for="ps-here-radio" style="display: inline">Here</label><br>
+                        <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
+                               disabled="disabled">
+                            <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
+                                   id="ps-zip-code" disabled="disabled">
                     </label>
                 </fieldset>
                 <footer>
