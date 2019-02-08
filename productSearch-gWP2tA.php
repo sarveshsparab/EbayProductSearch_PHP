@@ -88,6 +88,7 @@
                     <label><span>Category</span>
                         <select id="ps-category">
                             <option selected value="-1">All Categories</option>
+                            <option value="0" disabled="disabled">--------------------------------</option>
                             <option value="550">Art</option>
                             <option value="2984">Baby</option>
                             <option value="267">Books</option>
@@ -131,7 +132,9 @@
             </form>
         </div>
 
+        <div id="error-notify" class="error-notify-div">
 
+        </div>
 
         <div id="listings-container"  class="listings-container">
 
