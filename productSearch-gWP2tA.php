@@ -9,11 +9,58 @@
 <?php
 // PHP to fetch PSForm data
 if(isset($_POST['ps-submit'])){
+    $keyword = '';
+    $category = -1;
+    $condition_new = false;
+    $condition_used = false;
+    $condition_unspecified = false;
+    $shipping_local = false;
+    $shipping_free = false;
+    $miles = 10;
     $zipCode = '';
-    if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
-        $zipCode = $_POST['ps-zip-code'];
+
+    if (isset($_POST['ps-keyword']) && !empty($_POST['ps-keyword'])) {
+        $keyword = $_POST['ps-keyword'];
     }
-    echo $zipCode;
+
+    if (isset($_POST['ps-category']) && !empty($_POST['ps-category'])) {
+        $category = $_POST['ps-category'];
+    }
+
+    if (isset($_POST['ps-condition-new']) && !empty($_POST['ps-condition-new'])) {
+        $condition_new = true;
+    }
+    if (isset($_POST['ps-condition-used']) && !empty($_POST['ps-condition-used'])) {
+        $condition_used = true;
+    }
+    if (isset($_POST['ps-condition-unspecified']) && !empty($_POST['ps-condition-unspecified'])) {
+        $condition_unspecified = true;
+    }
+
+    if (isset($_POST['ps-shipping-local']) && !empty($_POST['ps-shipping-local'])) {
+        $shipping_local = true;
+    }
+    if (isset($_POST['ps-shipping-free']) && !empty($_POST['ps-shipping-free'])) {
+        $shipping_local = true;
+    }
+
+    if (isset($_POST['ps-miles']) && !empty($_POST['ps-miles'])) {
+        $miles = $_POST['ps-miles'];
+    }
+
+    if (isset($_POST['ps-here-zipcode']) && !empty($_POST['ps-here-zipcode'])) {
+        $zipCode = $_POST['ps-here-zipcode'];
+    }
+
+    echo "\n1> ".$keyword;
+    echo "\n2> ".$category;
+    echo "\n3> ".$condition_new;
+    echo "\n4> ".$condition_used;
+    echo "\n5> ".$condition_unspecified;
+    echo "\n6> ".$shipping_local;
+    echo "\n7> ".$shipping_free;
+    echo "\n8> ".$miles;
+    echo "\n9> ".$zipCode;
 }
 
 ?>
