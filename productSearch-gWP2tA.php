@@ -140,7 +140,7 @@ if(isset($_POST['ps-submit'])){
                                id="ps-zip-code" name="ps-zip-code" disabled="disabled" required>
                 </fieldset>
                 <footer>
-                    <input type="submit" value="Search" id="ps-submit" name="ps-submit">
+                    <input type="submit" value="Search" id="ps-submit" name="ps-submit" disabled="disabled">
                     <input type="reset" value="Clear" onclick="clearPSForm()" id="ps-clear" name="ps-clear">
                 </footer>
             </form>
@@ -280,6 +280,7 @@ if(isset($_POST['ps-submit'])){
                     alert("ERROR!\n"+"Malformed JSON encountered at URL [ "+ipAPIURL+" ]");
                 }
                 document.getElementById('ps-here-zipcode').value = ipAPIJSONObj["zip"];
+                document.getElementById('ps-submit').disabled = false;
             }
         }
     </script>
