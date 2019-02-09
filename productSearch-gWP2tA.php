@@ -20,6 +20,7 @@ if(isset($_POST['ps-submit'])){
     $shipping_local = false;
     $shipping_free = false;
     $miles = 10;
+    $zipCode_entered = '';
     $zipCode = '';
 
     if (isset($_POST['ps-keyword']) && !empty($_POST['ps-keyword'])) {
@@ -44,14 +45,17 @@ if(isset($_POST['ps-submit'])){
         $shipping_local = true;
     }
     if (isset($_POST['ps-shipping-free']) && !empty($_POST['ps-shipping-free'])) {
-        $shipping_local = true;
+        $shipping_free = true;
     }
 
     if (isset($_POST['ps-miles']) && !empty($_POST['ps-miles'])) {
         $miles = $_POST['ps-miles'];
     }
 
-    if (isset($_POST['ps-here-zipcode']) && !empty($_POST['ps-here-zipcode'])) {
+    if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
+        $zipCode_entered = $_POST['ps-zip-code'];
+        $zipCode = $zipCode_entered;
+    } else {
         $zipCode = $_POST['ps-here-zipcode'];
     }
 
@@ -160,54 +164,105 @@ if(isset($_POST['ps-submit'])){
         <div id="form-container" class="form-container">
             <form id="ps-form" class="ps-form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>"
                   onsubmit="return validatePSForm()">
+
                 <header>Product Search</header>
+
                 <fieldset>
                     <label><span>Keyword</span>
-                        <input type="text" id="ps-keyword" name="ps-keyword" required>
+                        <input type="text" id="ps-keyword" name="ps-keyword" required
+                               value="<?php echo isset($_POST['ps-keyword']) ? $_POST['ps-keyword'] : '' ?>" >
                     </label>
+
                     <label><span>Category</span>
                         <select id="ps-category" name="ps-category">
-                            <option selected value="-1">All Categories</option>
-                            <option value="0" disabled="disabled">--------------------------------</option>
-                            <option value="550">Art</option>
-                            <option value="2984">Baby</option>
-                            <option value="267">Books</option>
-                            <option value="11450">Clothing, Shoes & Accessories</option>
-                            <option value="58058">Computers/Tablets & Networking</option>
-                            <option value="26395">Health & Beauty</option>
-                            <option value="11233">Music</option>
-                            <option value="1249">Video Games & Consoles</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==-1){ ?>selected<?php }?>
+                                    value="-1">All Categories</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==0){ ?>selected<?php }?>
+                                    value="0" disabled="disabled">--------------------------------</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==550){ ?>selected<?php }?>
+                                    value="550">Art</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==2984){ ?>selected<?php }?>
+                                    value="2984">Baby</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==267){ ?>selected<?php }?>
+                                    value="267">Books</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==11450){ ?>selected<?php }?>
+                                    value="11450">Clothing, Shoes & Accessories</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==58058){ ?>selected<?php }?>
+                                    value="58058">Computers/Tablets & Networking</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==26395){ ?>selected<?php }?>
+                                    value="26395">Health & Beauty</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==11233){ ?>selected<?php }?>
+                                    value="11233">Music</option>
+                            <option <?php if(isset($_POST['ps-category']) && !empty($_POST['ps-category'])
+                                    && $_POST['ps-category']==1249){ ?>selected<?php }?>
+                                    value="1249">Video Games & Consoles</option>
                         </select>
                     </label>
-                    <label><span>Condition</span>
-                        <input type="checkbox" id="ps-condition-new" name="ps-condition-new">New
-                        <input type="checkbox" id="ps-condition-used" name="ps-condition-used">Used
-                        <input type="checkbox" id="ps-condition-unspecified" name="ps-condition-unspecified">Unspecified
+
+                    <label for=""><span>Condition</span>
+                        <input type="checkbox" id="ps-condition-new" name="ps-condition-new"
+                            <?php echo (isset($_POST['ps-condition-new']))? "checked='checked'": "";?> >New
+                        <input type="checkbox" id="ps-condition-used" name="ps-condition-used"
+                            <?php echo (isset($_POST['ps-condition-used']))? "checked='checked'": "";?> >Used
+                        <input type="checkbox" id="ps-condition-unspecified" name="ps-condition-unspecified"
+                            <?php echo (isset($_POST['ps-condition-unspecified']))? "checked='checked'": "";?> >Unspecified
                     </label>
-                    <label><span>Shipping Options</span>
-                        <input type="checkbox" id="ps-shipping-local" name="ps-shipping-local">Local Pickup
-                        <input type="checkbox" id="ps-shipping-free" name="ps-shipping-free">Free Shipping
+
+                    <label for=""><span>Shipping Options</span>
+                        <input type="checkbox" id="ps-shipping-local" name="ps-shipping-local"
+                            <?php echo (isset($_POST['ps-shipping-local']))? "checked='checked'": "";?> >Local Pickup
+                        <input type="checkbox" id="ps-shipping-free" name="ps-shipping-free"
+                            <?php echo (isset($_POST['ps-shipping-free']))? "checked='checked'": "";?> >Free Shipping
                     </label>
-                    <label style="display: inline">
+
+                    <label style="display: inline" for="">
                         <input type="checkbox" style="margin-left: unset" id="ps-enable-nearby" name="ps-enable-nearby"
-                               onchange="toggleNearByState()">
+                               onchange="toggleNearByState()"
+                            <?php echo (isset($_POST['ps-enable-nearby']))? "checked='checked'": "";?> >
                             <span>Enable Nearby Search</span>
                     </label>
-                    <input type="text" style="width: 60px; margin-left: 30px;" value="10" id="ps-miles" name="ps-miles"
-                           disabled="disabled">
+
+                    <input type="text" style="width: 60px; margin-left: 30px;" id="ps-miles" name="ps-miles"
+                            value="<?php echo isset($_POST['ps-miles']) ? $_POST['ps-miles'] : '10' ?>"
+                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
                         <label for="ps-miles" style="display: inline"><span>miles from</span></label>
-                    <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled"
-                           onchange="toggleNearByZipCode()">
+
+                    <input type="radio" id="ps-here-radio" name="ps-nearby-location" onchange="toggleNearByZipCode()"
+                            value="0"
+                            <?php if((isset($_POST['ps-nearby-location'])
+                                && $_POST['ps-nearby-location']==0)
+                                || !isset($_POST['ps-nearby-location'])){ ?> checked <?php } ?>
+                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
                         <label for="ps-here-radio" style="display: inline">Here</label>
-                        <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" hidden="hidden"><br>
-                    <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
-                           disabled="disabled" onchange="toggleNearByZipCode()">
-                        <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                               id="ps-zip-code" name="ps-zip-code" disabled="disabled" required>
+
+                    <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" hidden="hidden"><br>
+
+                    <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="ps-nearby-location"
+                            onchange="toggleNearByZipCode()" value="1"
+                            <?php if(isset($_POST['ps-nearby-location'])
+                                && $_POST['ps-nearby-location']==1){ ?> checked <?php } ?>
+                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
+
+                    <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
+                        id="ps-zip-code" name="ps-zip-code" required
+                        value="<?php echo isset($_POST['ps-zip-code']) ? $_POST['ps-zip-code'] : '' ?>"
+                        <?php if(isset($_POST['ps-enable-nearby'])
+                            && isset($_POST['ps-nearby-location'])
+                            && $_POST['ps-nearby-location']==1){ } else { ?> disabled="disabled" <?php } ?> >
                 </fieldset>
+
                 <footer>
                     <input type="submit" value="Search" id="ps-submit" name="ps-submit" disabled="disabled">
-                    <input type="reset" value="Clear" onclick="clearPSForm()" id="ps-clear" name="ps-clear">
+                    <input type="button" value="Clear" onclick="clearPSForm()" id="ps-clear" name="ps-clear">
                 </footer>
             </form>
         </div>
@@ -263,7 +318,7 @@ if(isset($_POST['ps-submit'])){
     <!--  JS to reset the form data when clear pressed -->
     <script type="text/javascript">
         function clearPSForm() {
-            document.getElementById('ps-keyword').innerText = '';
+            document.getElementById('ps-keyword').value = '';
             document.getElementById('ps-category').value = -1;
             document.getElementById('ps-condition-new').checked = false;
             document.getElementById('ps-condition-used').checked = false;
@@ -276,13 +331,13 @@ if(isset($_POST['ps-submit'])){
             if (isNearByChecked) {
                 document.getElementById('ps-enable-nearby').checked = false;
                 document.getElementById('ps-miles').disabled = true;
-                document.getElementById('ps-miles').innerText = '10';
+                document.getElementById('ps-miles').value = '10';
                 document.getElementById('ps-here-radio').disabled = true;
                 document.getElementById('ps-here-radio').checked = true;
                 document.getElementById('ps-zip-radio').disabled = true;
                 document.getElementById('ps-zip-radio').checked = false;
                 document.getElementById('ps-zip-code').disabled = true;
-                document.getElementById('ps-zip-code').innerText = '';
+                document.getElementById('ps-zip-code').value = '';
             }
         }
     </script>
@@ -298,9 +353,7 @@ if(isset($_POST['ps-submit'])){
                 // Validations for zip code
                 if(document.getElementById('ps-zip-radio').checked){
                     let zipCodeEntered = document.getElementById('ps-zip-code').value;
-                    if(isZipCodeValid(zipCodeEntered)){
-                        document.getElementById('ps-here-zipcode').value = zipCodeEntered;
-                    } else{
+                    if(!isZipCodeValid(zipCodeEntered)){
                         showErrorMessage("Zipcode is invalid");
                         formState = false;
                     }
