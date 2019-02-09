@@ -267,6 +267,10 @@ if(isset($_POST['ps-submit'])){
                     showErrorMessage("Miles cannot be negative");
                     formState = false;
                 }
+                if(! /^\d+$/.test(document.getElementById('ps-miles').value)){
+                    showErrorMessage("Miles have to be numeric");
+                    formState = false;
+                }
             }
 
             return formState;
@@ -300,12 +304,12 @@ if(isset($_POST['ps-submit'])){
                     if(xmlHTTPRequest.status==200) {
                         jsonStr = xmlHTTPRequest.responseText;
                     } else if (xmlHTTPRequest.status==404) {
-                        jsonStr = "error-404-" + apiURL;
+                        jsonStr = "error-404-[FileNotFound] - " + apiURL;
                     } else {
-                        jsonStr = "error-000-empty";
+                        jsonStr = "error-000-[Empty Response]";
                     }
                 } else {
-                    jsonStr = "error-000-empty";
+                    jsonStr = "error-000-[Empty Response]";
                 }
             }
 
@@ -322,14 +326,13 @@ if(isset($_POST['ps-submit'])){
             let ipAPIURL = "http://ip-api.com/json";
             let ipAPIJSON = fetchJSONFromURL(ipAPIURL);
             if(ipAPIJSON.startsWith("error")){
-            //    TODO : show error
+                showErrorMessage(ipAPIJSON);
             }else{
                 try{
                     var ipAPIJSONObj = JSON.parse(ipAPIJSON);
                 }
                 catch(e){
-                    //   TODO : handle error here
-                    alert("ERROR!\n"+"Malformed JSON encountered at URL [ "+ipAPIURL+" ]");
+                    showErrorMessage("Malformed JSON encountered at URL [ "+ipAPIURL+" ]");
                 }
                 document.getElementById('ps-here-zipcode').value = ipAPIJSONObj["zip"];
                 document.getElementById('ps-submit').disabled = false;
