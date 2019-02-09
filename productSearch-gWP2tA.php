@@ -9,9 +9,11 @@
 <?php
 // PHP to fetch PSForm data
 if(isset($_POST['ps-submit'])){
+    $zipCode = '';
     if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
-        $zipcode = $_POST['ps-zip-code'];
+        $zipCode = $_POST['ps-zip-code'];
     }
+    echo $zipCode;
 }
 
 ?>
@@ -129,7 +131,9 @@ if(isset($_POST['ps-submit'])){
                         <label for="ps-miles" style="display: inline"><span>miles from</span></label>
                     <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled"
                            onchange="toggleNearByZipCode()">
-                        <label for="ps-here-radio" style="display: inline">Here</label><br>
+                        <label for="ps-here-radio" style="display: inline">Here</label>
+                        <!-- TODO : Make this hidden -->
+                        <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" disabled="disabled"><br>
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
                            disabled="disabled" onchange="toggleNearByZipCode()">
                         <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
@@ -220,17 +224,64 @@ if(isset($_POST['ps-submit'])){
         function validatePSForm() {
             var formState = true;
 
-            
+
 
             return formState;
         }
     </script>
 
-        <!-- JS to validate zip code -->
-        <script type="text/javascript">
-            function isZipCodeValid(zcVal) {
-                return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zcVal)
+    <!-- JS to validate zip code -->
+    <script type="text/javascript">
+        function isZipCodeValid(zcVal) {
+            return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zcVal)
+        }
+    </script>
+
+    <!-- JS to fetch JSON from an API URL -->
+    <script type="text/javascript">
+        function fetchJSONFromURL(apiURL) {
+            var jsonStr = ""
+
+            var xmlHTTPRequest = new XMLHttpRequest();
+            xmlHTTPRequest.onreadystatechange = function () {
+                if (xmlHTTPRequest.readyState == XMLHttpRequest.DONE ) {
+                    if(xmlHTTPRequest.status==200) {
+                        jsonStr = xmlHTTPRequest.responseText;
+                    } else if (xmlHTTPRequest.status==404) {
+                        jsonStr = "error-404-" + apiURL;
+                    } else {
+                        jsonStr = "error-000-empty";
+                    }
+                } else {
+                    jsonStr = "error-000-empty";
+                }
             }
-        </script>
+
+            xmlHTTPRequest.open("GET", apiURL, false);
+            xmlHTTPRequest.send();
+
+            return jsonStr;
+        }
+    </script>
+
+    <!-- JS to fetch current location IP on page load -->
+    <script type="text/javascript">
+        window.onload = function (e) {
+            let ipAPIURL = "http://ip-api.com/json";
+            let ipAPIJSON = fetchJSONFromURL(ipAPIURL);
+            if(ipAPIJSON.startsWith("error")){
+            //    TODO : show error
+            }else{
+                try{
+                    var ipAPIJSONObj = JSON.parse(ipAPIJSON);
+                }
+                catch(e){
+                    //   TODO : handle error here
+                    alert("ERROR!\n"+"Malformed JSON encountered at URL [ "+ipAPIURL+" ]");
+                }
+                document.getElementById('ps-here-zipcode').value = ipAPIJSONObj["zip"];
+            }
+        }
+    </script>
     </body>
 </html>
