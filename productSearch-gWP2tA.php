@@ -9,6 +9,9 @@
 <?php
 // PHP to fetch PSForm data
 if(isset($_POST['ps-submit'])){
+
+    echo var_dump($_POST);
+
     $keyword = '';
     $category = -1;
     $condition_new = false;
@@ -196,8 +199,7 @@ if(isset($_POST['ps-submit'])){
                     <input type="radio" id="ps-here-radio" name="nearby-location" checked  disabled="disabled"
                            onchange="toggleNearByZipCode()">
                         <label for="ps-here-radio" style="display: inline">Here</label>
-                        <!-- TODO : Make this hidden -->
-                        <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" disabled="disabled"><br>
+                        <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" hidden="hidden"><br>
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="nearby-location"
                            disabled="disabled" onchange="toggleNearByZipCode()">
                         <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
