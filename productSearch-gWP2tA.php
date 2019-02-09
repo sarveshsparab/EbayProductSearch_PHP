@@ -169,7 +169,7 @@ if(isset($_POST['ps-submit'])){
 
                 <fieldset>
                     <label><span>Keyword</span>
-                        <input type="text" id="ps-keyword" name="ps-keyword" required
+                        <input type="text" id="ps-keyword" name="ps-keyword" required autocomplete="off"
                                value="<?php echo isset($_POST['ps-keyword']) ? $_POST['ps-keyword'] : '' ?>" >
                     </label>
 
@@ -232,28 +232,29 @@ if(isset($_POST['ps-submit'])){
                     </label>
 
                     <input type="text" style="width: 60px; margin-left: 30px;" id="ps-miles" name="ps-miles"
-                            value="<?php echo isset($_POST['ps-miles']) ? $_POST['ps-miles'] : '10' ?>"
-                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
-                        <label for="ps-miles" style="display: inline"><span>miles from</span></label>
+                        value="<?php echo isset($_POST['ps-miles']) ? $_POST['ps-miles'] : '10' ?>"
+                        <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?>
+                        autocomplete="off" >
+                    <label for="ps-miles" style="display: inline"><span>miles from</span></label>
 
                     <input type="radio" id="ps-here-radio" name="ps-nearby-location" onchange="toggleNearByZipCode()"
-                            value="0"
-                            <?php if((isset($_POST['ps-nearby-location'])
-                                && $_POST['ps-nearby-location']==0)
-                                || !isset($_POST['ps-nearby-location'])){ ?> checked <?php } ?>
-                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
-                        <label for="ps-here-radio" style="display: inline">Here</label>
+                        value="0"
+                        <?php if((isset($_POST['ps-nearby-location'])
+                            && $_POST['ps-nearby-location']==0)
+                            || !isset($_POST['ps-nearby-location'])){ ?> checked <?php } ?>
+                        <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
+                    <label for="ps-here-radio" style="display: inline">Here</label>
 
                     <input type="text" id="ps-here-zipcode" name="ps-here-zipcode" hidden="hidden"><br>
 
                     <input type="radio" style="margin-left: 353px" id="ps-zip-radio" name="ps-nearby-location"
-                            onchange="toggleNearByZipCode()" value="1"
-                            <?php if(isset($_POST['ps-nearby-location'])
-                                && $_POST['ps-nearby-location']==1){ ?> checked <?php } ?>
-                            <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
+                        onchange="toggleNearByZipCode()" value="1"
+                        <?php if(isset($_POST['ps-nearby-location'])
+                            && $_POST['ps-nearby-location']==1){ ?> checked <?php } ?>
+                        <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?> >
 
                     <input type="text" placeholder="zip code" style="margin-left: 5px; width: 100px;"
-                        id="ps-zip-code" name="ps-zip-code" required
+                        id="ps-zip-code" name="ps-zip-code" required autocomplete="off"
                         value="<?php echo isset($_POST['ps-zip-code']) ? $_POST['ps-zip-code'] : '' ?>"
                         <?php if(isset($_POST['ps-enable-nearby'])
                             && isset($_POST['ps-nearby-location'])
