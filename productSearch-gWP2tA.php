@@ -149,10 +149,16 @@ if(isset($_POST['ps-submit'])){
                 background-color: #dddddd;
             }
 
-
+            /* Search results listing div CSS */
             .listings-container{
                 background-color: yellow;
+                display: block;
+                margin-left: 50px;
+                margin-right: 50px;
+                margin-top: 25px;
+                height: 300px;
             }
+
             .details-container{
                 background-color: darkgreen;
             }
@@ -273,9 +279,11 @@ if(isset($_POST['ps-submit'])){
 
         </div>
 
+        <!-- Search results listing div -->
         <div id="listings-container"  class="listings-container">
 
         </div>
+
         <div id="details-container"  class="details-container">
             <div id="details-table-container">
 
@@ -327,6 +335,7 @@ if(isset($_POST['ps-submit'])){
             document.getElementById('ps-shipping-free').checked = false;
             document.getElementById('ps-shipping-local').checked = false;
             document.getElementById('error-notify').style.display = "none";
+            document.getElementById('listings-container').style.display = "none";
 
             let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
             if (isNearByChecked) {
