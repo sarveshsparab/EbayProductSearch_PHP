@@ -83,7 +83,7 @@ if(isset($_POST['ps-submit'])){
 
             /* Error notification div CSS */
             .error-notify-div{
-                display: block;
+                display: none;
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 30px;
@@ -251,17 +251,20 @@ if(isset($_POST['ps-submit'])){
                     if(isZipCodeValid(zipCodeEntered)){
                         document.getElementById('ps-here-zipcode').value = zipCodeEntered;
                     } else{
-                        //    TODO : Show error
+                        showErrorMessage("Zipcode is invalid");
+                        formState = false;
                     }
                 }
 
                 // Validations for miles radius
                 if(document.getElementById('ps-miles').value == "" ||
                     document.getElementById('ps-miles').value.length == 0 ){
-                    //     TODO : SHow error
+                    showErrorMessage("Miles cannot be empty");
+                    formState = false;
                 }
                 if(document.getElementById('ps-miles').value < 0){
-                    //     TODO : Show error
+                    showErrorMessage("Miles cannot be negative");
+                    formState = false;
                 }
             }
 
@@ -271,7 +274,11 @@ if(isset($_POST['ps-submit'])){
 
     <!-- JS to show the error messages on screen -->
     <script type="text/javascript">
-
+        function showErrorMessage(msg) {
+            var errorDiv = document.getElementById('error-notify');
+            errorDiv.innerText = msg;
+            errorDiv.style.display = "block";
+        }
     </script>
 
     <!-- JS to validate zip code -->
