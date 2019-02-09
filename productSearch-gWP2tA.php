@@ -221,6 +221,7 @@ if(isset($_POST['ps-submit'])){
             document.getElementById('ps-condition-unspecified').checked = false;
             document.getElementById('ps-shipping-free').checked = false;
             document.getElementById('ps-shipping-local').checked = false;
+            document.getElementById('error-notify').style.display = "none";
 
             let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
             if (isNearByChecked) {
