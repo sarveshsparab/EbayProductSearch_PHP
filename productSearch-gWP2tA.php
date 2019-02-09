@@ -10,8 +10,6 @@
 // PHP to fetch PSForm data
 if(isset($_POST['ps-submit'])){
 
-    echo var_dump($_POST);
-
     $keyword = '';
     $category = -1;
     $condition_new = false;
@@ -59,15 +57,45 @@ if(isset($_POST['ps-submit'])){
         $zipCode = $_POST['ps-here-zipcode'];
     }
 
-    echo "\n1> ".$keyword;
-    echo "\n2> ".$category;
-    echo "\n3> ".$condition_new;
-    echo "\n4> ".$condition_used;
-    echo "\n5> ".$condition_unspecified;
-    echo "\n6> ".$shipping_local;
-    echo "\n7> ".$shipping_free;
-    echo "\n8> ".$miles;
-    echo "\n9> ".$zipCode;
+    $ebayFindingAPICallURL = '';
+    $ebayFindingAPICallURL .= 'http://svcs.ebay.com/services/search/FindingService/v1?';
+    $ebayFindingAPICallURL .= 'OPERATION-NAME=findItemsAdvanced';
+    $ebayFindingAPICallURL .='&SERVICE-VERSION=1.0.0';
+    $ebayFindingAPICallURL .='&SECURITY-APPNAME='.'SarveshP-sarveshp-PRD-4a6d4ee64-9b547e7c';
+    $ebayFindingAPICallURL .='&RESPONSE-DATA-FORMAT=JSON';
+    $ebayFindingAPICallURL .='&REST-PAYLOAD';
+    $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
+    $ebayFindingAPICallURL .='&keywords='.$keyword;
+    if($category != -1) {
+        $ebayFindingAPICallURL .= '&categoryId=' . $category;
+    }
+    if($shipping_free) {
+        $ebayFindingAPICallURL .= '&itemFilter.name=FreeShippingOnly';
+        $ebayFindingAPICallURL .= '&itemFilter.value=true';
+    }
+    if($shipping_local) {
+        $ebayFindingAPICallURL .= '&itemFilter.name=LocalPickupOnly';
+        $ebayFindingAPICallURL .= '&itemFilter.value=true';
+    }
+    if($condition_new || $condition_used || $condition_unspecified) {
+        $ebayFindingAPICallURL .= '&itemFilter.name=Condition';
+        if($condition_new) {
+            $ebayFindingAPICallURL .= '&itemFilter.value=New';
+        }
+        if($condition_used) {
+            $ebayFindingAPICallURL .= '&itemFilter.value=Used';
+        }
+        if($condition_unspecified) {
+            $ebayFindingAPICallURL .= '&itemFilter.value=Unspecified';
+        }
+    }
+    $ebayFindingAPICallURL .='&buyerPostalCode='.$zipCode;
+    $ebayFindingAPICallURL .='&MaxDistance='.$miles;
+
+    $response = file_get_contents($ebayFindingAPICallURL);
+    $response = json_decode($response);
+
+    echo var_dump($response);
 }
 
 ?>
