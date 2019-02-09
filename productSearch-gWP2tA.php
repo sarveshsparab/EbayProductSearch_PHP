@@ -22,6 +22,8 @@ if(isset($_POST['ps-submit'])){
     <head>
         <title>Product Search</title>
         <style>
+
+            /* PS Form CSS */
             .form-container{
                 background-color: #f6f6f6;
                 display: block;
@@ -78,6 +80,21 @@ if(isset($_POST['ps-submit'])){
             input:disabled+label {
                 color: #8c8c8c;
             }
+
+            /* Error notification div CSS */
+            .error-notify-div{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 30px;
+                width: 750px;
+                height: 20px;
+                text-align: center;
+                font-size: 16px;
+                border: 1px solid #b4b4b4;
+                background-color: #dddddd;
+            }
+
 
             .listings-container{
                 background-color: yellow;
@@ -146,6 +163,7 @@ if(isset($_POST['ps-submit'])){
             </form>
         </div>
 
+        <!-- Error notification div -->
         <div id="error-notify" class="error-notify-div">
 
         </div>
@@ -219,15 +237,41 @@ if(isset($_POST['ps-submit'])){
         }
     </script>
 
-    <!-- JS to handle submit button click -->
+    <!-- JS to validate PS Form on submit click -->
     <script type="text/javascript">
         function validatePSForm() {
-            var formState = true;
+            let formState = true;
 
+            // Validations for nearby search
+            if(document.getElementById('ps-enable-nearby').checked){
 
+                // Validations for zip code
+                if(document.getElementById('ps-zip-radio').checked){
+                    let zipCodeEntered = document.getElementById('ps-zip-code').value;
+                    if(isZipCodeValid(zipCodeEntered)){
+                        document.getElementById('ps-here-zipcode').value = zipCodeEntered;
+                    } else{
+                        //    TODO : Show error
+                    }
+                }
+
+                // Validations for miles radius
+                if(document.getElementById('ps-miles').value == "" ||
+                    document.getElementById('ps-miles').value.length == 0 ){
+                    //     TODO : SHow error
+                }
+                if(document.getElementById('ps-miles').value < 0){
+                    //     TODO : Show error
+                }
+            }
 
             return formState;
         }
+    </script>
+
+    <!-- JS to show the error messages on screen -->
+    <script type="text/javascript">
+
     </script>
 
     <!-- JS to validate zip code -->
