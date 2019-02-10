@@ -372,14 +372,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 xhttp.open("POST", url, false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send(params);
-                ebayFindingsAPIResult = JSON.parse(xhttp.responseText);
-                console.log(ebayFindingsAPIResult);
-                var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
-                console.log(listingsTableHTML);
+                try {
+                    var ebayFindingsAPIResult = JSON.parse(xhttp.responseText);
 
-                document.getElementById('listings-container').innerHTML = listingsTableHTML;
+                    console.log(ebayFindingsAPIResult);
+
+                    if(!anyItemsRetrieved(ebayFindingsAPIResult)){
+                        showErrorMessage("No Records has been found");
+                    } else {
+                        var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
+                        document.getElementById('listings-container').innerHTML = listingsTableHTML;
+                    }
+                }catch(e){
+                    showErrorMessage("Malformed JSON returned from ebayFindingsApi");
+                    console.log("ERROR");
+                    console.log(ebayFindingsAPIResult);
+                }
             }
         }, false);
+    </script>
+
+    <!-- JS to check if the ebay finding API returned any valid result or not -->
+    <script type="text/javascript">
+        function anyItemsRetrieved(jsonObj) {
+            var retrievedValidItems = true;
+            if(jsonObj == null || jsonObj.length == 0)
+                retrievedValidItems = false;
+            else if (jsonObj.findItemsAdvancedResponse == null || jsonObj.findItemsAdvancedResponse.length == 0)
+                retrievedValidItems = false;
+            else if (jsonObj.findItemsAdvancedResponse[0].searchResult == null ||
+                jsonObj.findItemsAdvancedResponse[0].searchResult.length == 0)
+                retrievedValidItems = false;
+            else if (jsonObj.findItemsAdvancedResponse[0].searchResult[0].item == null ||
+                jsonObj.findItemsAdvancedResponse[0].searchResult[0].item.length == 0)
+                retrievedValidItems = false;
+            return retrievedValidItems;
+        }
     </script>
 
     <!-- JS to build the search results listings -->
