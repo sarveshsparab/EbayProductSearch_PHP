@@ -361,6 +361,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             event.preventDefault();
 
             if(validatePSForm()) {
+
+                hideSecondaryDivs();
+
                 var url = psForm.action;
                 var params = "";
                 var data = new FormData(psForm);
@@ -382,6 +385,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     } else {
                         var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
                         document.getElementById('listings-container').innerHTML = listingsTableHTML;
+                        document.getElementById('listings-container').style.display = "block";
                     }
                 }catch(e){
                     showErrorMessage("Malformed JSON returned from ebayFindingsApi");
@@ -571,8 +575,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             document.getElementById('ps-condition-unspecified').checked = false;
             document.getElementById('ps-shipping-free').checked = false;
             document.getElementById('ps-shipping-local').checked = false;
-            document.getElementById('error-notify').style.display = "none";
-            document.getElementById('listings-container').style.display = "none";
+            hideSecondaryDivs();
 
             let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
             if (isNearByChecked) {
@@ -586,6 +589,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 document.getElementById('ps-zip-code').disabled = true;
                 document.getElementById('ps-zip-code').value = '';
             }
+        }
+    </script>
+
+    <!-- JS to hide/close the secomdary divs -->
+    <script type="text/javascript">
+        function hideSecondaryDivs() {
+            document.getElementById('error-notify').style.display = "none";
+            document.getElementById('listings-container').style.display = "none";
         }
     </script>
 
@@ -688,5 +699,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
     </script>
+
     </body>
 </html>
