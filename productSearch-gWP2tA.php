@@ -265,6 +265,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
             /* Seller message container */
             .details-seller-message{
+                display: block;
                 margin-right: auto;
                 margin-left: auto;
                 height: 100px;
@@ -273,6 +274,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
             /* Similar items container */
             .details-similar-items{
+                display: block;
                 margin-right: auto;
                 margin-left: auto;
                 height: 100px;
@@ -284,6 +286,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 display: block;
                 text-align: center;
                 margin-top: 25px;
+                cursor: pointer;
             }
             .details-toggle p{
                 color: #646464;
@@ -436,8 +439,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             </div>
 
             <!-- Toggling arrow for seller message -->
-            <div id="details-seller-message-toggle" class="details-toggle">
-                <p>click to show seller message</p>
+            <div id="details-seller-message-toggle" class="details-toggle" onclick="toggleSellerMessage()">
+                <p>click to <span>show</span> seller message</p>
                 <img class="details-arrow-down" >
             </div>
 
@@ -447,8 +450,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             </div>
 
             <!-- Toggling arrow for similar items -->
-            <div id="details-similar-items-toggle" class="details-toggle">
-                <p>click to show similar items</p>
+            <div id="details-similar-items-toggle" class="details-toggle" onclick="toggleSimilarItems()">
+                <p>click to <span>show</span> similar items</p>
                 <img class="details-arrow-down" >
             </div>
 
@@ -458,6 +461,32 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             </div>
         </div>
 
+    <!-- JS to toggle the seller message -->
+    <script type="text/javascript">
+        function toggleSellerMessage() {
+            toggleArrowAndText(document.getElementById('details-seller-message-toggle'));
+        }
+    </script>
+
+    <!-- JS to toggle the similar items -->
+    <script type="text/javascript">
+        function toggleSimilarItems() {
+            toggleArrowAndText(document.getElementById('details-similar-items-toggle'));
+        }
+    </script>
+        
+    <!-- JS to change the state of the toggle arrow and text -->
+    <script type="text/javascript">
+        function toggleArrowAndText(domObj) {
+            if(domObj.childNodes[3].className == "details-arrow-down"){
+                domObj.childNodes[1].childNodes[1].innerText = "hide";
+                domObj.childNodes[3].className = "details-arrow-up";
+            }else if (domObj.childNodes[3].className == "details-arrow-up"){
+                domObj.childNodes[1].childNodes[1].innerText = "show";
+                domObj.childNodes[3].className = "details-arrow-down";
+            }
+        }
+    </script>
 
     <!-- JS to fetch individual item details -->
     <script type="text/javascript">
