@@ -8,8 +8,8 @@
 
 <?php
 
-// PHP to fetch PSForm data
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+// PHP to fetch from ebayFindingAPI [ postType = 1 ]
+if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
 
     $keyword = '';
     $category = -1;
@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
         $zipCode_entered = $_POST['ps-zip-code'];
         $zipCode = $zipCode_entered;
-    } else {
+    } else if (isset($_POST['ps-here-zipcode']) && !empty($_POST['ps-here-zipcode'])) {
         $zipCode = $_POST['ps-here-zipcode'];
     }
 
@@ -96,6 +96,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $ebayFindingAPICallResponse = file_get_contents($ebayFindingAPICallURL);
     exit($ebayFindingAPICallResponse);
 }
+
+// PHP to fetch from getSingleItemAPI [ postType = 2 ]
+else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
+    $itemId = '';
+
+    if (isset($_POST['itemId']) && !empty($_POST['itemId'])) {
+        $itemId = $_POST['itemId'];
+    }
+
+    $ebayGetSingleItemAPICallURL = '';
+    $ebayGetSingleItemAPICallURL .= 'http://open.api.ebay.com/shopping?';
+    $ebayGetSingleItemAPICallURL .= 'callname=GetSingleItem';
+    $ebayGetSingleItemAPICallURL .= '&responseencoding=JSON';
+    $ebayGetSingleItemAPICallURL .= '&appid='.'SarveshP-sarveshp-PRD-4a6d4ee64-9b547e7c';
+    $ebayGetSingleItemAPICallURL .= '&siteid=0';
+    $ebayGetSingleItemAPICallURL .= '&version=967';
+    $ebayGetSingleItemAPICallURL .= '&ItemID='.$itemId;
+    $ebayGetSingleItemAPICallURL .= '&IncludeSelector=Description,Details,ItemSpecifics';
+
+    $ebayGetSingleItemAPICallResponse = file_get_contents($ebayGetSingleItemAPICallURL);
+    exit($ebayGetSingleItemAPICallResponse);
+}
+
 
 ?>
 
@@ -350,7 +373,151 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- JS to fetch individual item details -->
     <script type="text/javascript">
         function fetchItemDetails(itemId) {
-            alert(itemId);
+            console.log("Fetching item details : "+itemId);
+            hideSecondaryDivs();
+
+            var psForm = document.getElementById("ps-form");
+            var url = psForm.action;
+            var params = "postType=2&itemId="+itemId;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", url, false);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(params);
+            try {
+                var ebaySingleItemAPIResult = JSON.parse(xhttp.responseText);
+
+                console.log(ebaySingleItemAPIResult);
+
+                if(!anyItemDetailsRetrieved(ebaySingleItemAPIResult)){
+                    showErrorMessage("No Item Details have been found");
+                } else {
+                    var itemDetailsTableHTML = buildItemDetailsTable(ebaySingleItemAPIResult);
+                    document.getElementById('details-table-container').innerHTML = itemDetailsTableHTML;
+                    document.getElementById('details-table-container').style.display = "block";
+                }
+            }catch(e){
+                showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
+                console.log("ERROR");
+                console.log(ebaySingleItemAPIResult);
+            }
+        }
+    </script>
+
+    <!-- JS to check if the ebay get single item API returned any valid result or not -->
+    <script type="text/javascript">
+        function anyItemDetailsRetrieved(jsonObj) {
+            var retrievedValidItemDetails = true;
+            if(jsonObj == null || jsonObj.length == 0)
+                retrievedValidItemDetails = false;
+            else if (jsonObj.Item == null || jsonObj.Item.length == 0)
+                retrievedValidItemDetails = false;
+            return retrievedValidItemDetails;
+        }
+    </script>
+
+    <!-- JS to build the single item details table -->
+    <script type="text/javascript">
+        function buildItemDetailsTable(jsonObj) {
+            let tableElem = document.createElement('table');
+            tableElem.setAttribute("cellspacing","0");
+
+            let tBodyElem = tableElem.createTBody();
+            let rowCount = 0;
+            let tBodyRow;
+            let tBodyCell;
+
+            // Photo Row
+            tBodyRow = tBodyElem.insertRow(rowCount++);
+            tBodyCell = tBodyRow.insertCell(0);
+            tBodyCell.innerHTML = '<b>Photo</b>';
+            tBodyCell = tBodyRow.insertCell(1);
+            tBodyCell.innerText = 'Photo';
+
+            // Title Row
+            if(jsonObj.Item.Title != null && jsonObj.Item.Title.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Title</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.innerText = jsonObj.Item.Title;
+            }
+
+            // Subtitle Row
+            if(jsonObj.Item.Subtitle != null && jsonObj.Item.Subtitle.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Subtitle</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.innerText = jsonObj.Item.Subtitle;
+            }
+
+            // Price Row
+            if(jsonObj.Item.CurrentPrice != null && jsonObj.Item.CurrentPrice.length !=0 &&
+                jsonObj.Item.CurrentPrice.Value != null && jsonObj.Item.CurrentPrice.Value.length !=0 &&
+                jsonObj.Item.CurrentPrice.CurrencyID != null && jsonObj.Item.CurrentPrice.CurrencyID.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Price</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.innerText = jsonObj.Item.CurrentPrice.Value + " " + jsonObj.Item.CurrentPrice.CurrencyID;
+            }
+
+            // Location Row
+            if(jsonObj.Item.Location != null && jsonObj.Item.Location.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerText = '<b>Location</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                if(jsonObj.Item.PostalCode != null && jsonObj.Item.PostalCode.length !=0)
+                    tBodyCell.innerText = jsonObj.Item.Location + ", " + jsonObj.Item.PostalCode;
+                else
+                    tBodyCell.innerText = jsonObj.Item.Location;
+            }
+
+            // Seller Row
+            if(jsonObj.Item.Seller != null && jsonObj.Item.Seller.length !=0 &&
+                jsonObj.Item.Seller.UserID != null && jsonObj.Item.Seller.UserID.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Seller</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.innerText = jsonObj.Item.Seller.UserID;
+            }
+
+            // Return Policy (US) Row
+            if(jsonObj.Item.ReturnPolicy != null && jsonObj.Item.ReturnPolicy.length !=0 &&
+                jsonObj.Item.ReturnPolicy.ReturnsAccepted != null &&
+                jsonObj.Item.ReturnPolicy.ReturnsAccepted.length !=0 &&
+                jsonObj.Item.ReturnPolicy.ReturnsWithin != null && jsonObj.Item.ReturnPolicy.ReturnsWithin.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Return Policy (US)</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.innerText = jsonObj.Item.ReturnPolicy.ReturnsAccepted + " " +
+                    jsonObj.Item.ReturnPolicy.ReturnsWithin;
+            }
+
+            // Item Specific Rows
+            if(jsonObj.Item.ItemSpecifics != null && jsonObj.Item.ItemSpecifics.length !=0 &&
+                jsonObj.Item.ItemSpecifics.NameValueList != null &&
+                jsonObj.Item.ItemSpecifics.NameValueList.length !=0) {
+
+                let specificsRows = jsonObj.Item.ItemSpecifics.NameValueList;
+
+                for(let r=0; r < specificsRows.length; r++){
+                    if(specificsRows[r] != null && specificsRows[r].length !=0 &&
+                        specificsRows[r].Name != null && specificsRows[r].Name.length !=0 &&
+                        specificsRows[r].Value != null && specificsRows[r].Value.length !=0) {
+                        tBodyRow = tBodyElem.insertRow(rowCount++);
+                        tBodyCell = tBodyRow.insertCell(0);
+                        tBodyCell.innerHTML = '<b>' + specificsRows[r].Name + '</b>';
+                        tBodyCell = tBodyRow.insertCell(1);
+                        tBodyCell.innerText = specificsRows[r].Value[0];
+                    }
+                }
+            }
+
+            return tableElem.outerHTML;
         }
     </script>
 
@@ -365,7 +532,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 hideSecondaryDivs();
 
                 var url = psForm.action;
-                var params = "";
+                var params = "postType=1&";
                 var data = new FormData(psForm);
                 for (const entry of data) {
                     params += entry[0] + "=" + encodeURIComponent(entry[1]) + "&";
@@ -592,7 +759,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     </script>
 
-    <!-- JS to hide/close the secomdary divs -->
+    <!-- JS to hide/close the secondary divs -->
     <script type="text/javascript">
         function hideSecondaryDivs() {
             document.getElementById('error-notify').style.display = "none";
