@@ -287,6 +287,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 text-align: center;
                 margin-top: 25px;
                 cursor: pointer;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
             }
             .details-toggle p{
                 color: #646464;
