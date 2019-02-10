@@ -341,6 +341,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
         </div>
 
+
+    <!-- JS to fetch individual item details -->
+    <script type="text/javascript">
+        function fetchItemDetails(itemId) {
+            alert(itemId);
+        }
+    </script>
+
     <!-- JS to submit the search form -->
     <script type="text/javascript">
         var psForm = document.getElementById("ps-form");
@@ -402,11 +410,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Photo Cell
                 tBodyCell = tBodyRow.insertCell(cellCount++);
                 buildImageCell(tBodyCell, dataRows[r]);
-                tBodyCell.setAttribute("style","text-align: center;");
+                tBodyCell.setAttribute("style", "text-align: center;");
 
                 // Name Cell
                 tBodyCell = tBodyRow.insertCell(cellCount++);
-                tBodyCell.innerHTML = dataRows[r]["title"];
+                buildNameCell(tBodyCell, dataRows[r]);
 
                 // Price Cell
                 tBodyCell = tBodyRow.insertCell(cellCount++);
@@ -429,12 +437,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script type="text/javascript">
         function buildImageCell(cell, jsonObj) {
             if(jsonObj.galleryURL !=null && jsonObj.galleryURL != "" && jsonObj.galleryURL.length != 0){
-                var imageElem = document.createElement('img');
+                let imageElem = document.createElement('img');
                 imageElem.setAttribute("src", jsonObj.galleryURL[0]);
                 cell.appendChild(imageElem);
             } else {
                 cell.innerHTML = "";
             }
+        }
+        function buildNameCell(cell, jsonObj) {
+            let spanElem = document.createElement('span');
+            let titleElem = document.createTextNode(jsonObj["title"]);
+            spanElem.setAttribute("onclick", "fetchItemDetails("+jsonObj.itemId[0]+")");
+            spanElem.setAttribute("style", "cursor: pointer");
+            spanElem.appendChild(titleElem);
+            cell.appendChild(spanElem);
         }
         function buildCurrencyString(jsonObj) {
             let currStr = '';
