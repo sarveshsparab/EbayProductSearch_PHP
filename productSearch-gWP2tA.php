@@ -229,7 +229,37 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             }
 
             .details-container{
-                background-color: darkgreen;
+                margin-bottom: 40px;
+            }
+
+            /* Item details div CSS */
+            .details-table-container{
+                display: block;
+                margin-left: 315px;
+                margin-right: 315px;
+                margin-top: 25px;
+            }
+            .details-table-container table{
+                width: 100%;
+                border-spacing: 0;
+            }
+            .details-table-container table th{
+                border: none;
+            }
+            .details-table-container table tr:first-child td *{
+                max-height: 250px !important;
+            }
+            .details-table-container table tr:first-child td{
+                border-top: 1.5px solid #b4b4b4;
+            }
+            .details-table-container table td{
+                border-bottom: 1.5px solid #b4b4b4;
+                border-left: 1.5px solid #b4b4b4;
+                border-collapse: collapse;
+                padding-left: 10px;
+            }
+            .details-table-container table tbody tr td:last-child{
+                border-right: 1.5px solid #b4b4b4;
             }
 
             /* Misc */
@@ -358,7 +388,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
         </div>
 
         <div id="details-container"  class="details-container">
-            <div id="details-table-container">
+            <div id="details-table-container" class="details-table-container">
 
             </div>
             <div id="details-seller-message-container">
@@ -421,17 +451,31 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             let tableElem = document.createElement('table');
             tableElem.setAttribute("cellspacing","0");
 
+            let tHeadElem = tableElem.createTHead();
+            let tHeadRow = tHeadElem.insertRow(0);
+
+            let tHeadCell = document.createElement('th');
+            tHeadCell.innerHTML = "<b>Item Details</b>";
+            tHeadCell.setAttribute("style", "text-align:center; font-size: 35px;");
+            tHeadCell.setAttribute("colspan", "2");
+            tHeadRow.appendChild(tHeadCell);
+
             let tBodyElem = tableElem.createTBody();
             let rowCount = 0;
             let tBodyRow;
             let tBodyCell;
 
             // Photo Row
-            tBodyRow = tBodyElem.insertRow(rowCount++);
-            tBodyCell = tBodyRow.insertCell(0);
-            tBodyCell.innerHTML = '<b>Photo</b>';
-            tBodyCell = tBodyRow.insertCell(1);
-            tBodyCell.innerText = 'Photo';
+            if(jsonObj.Item.PictureURL != null && jsonObj.Item.PictureURL.length !=0) {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>Photo</b>';
+
+                tBodyCell = tBodyRow.insertCell(1);
+                let imageElem = document.createElement('img');
+                imageElem.setAttribute("src", jsonObj.Item.PictureURL[0]);
+                tBodyCell.appendChild(imageElem);
+            }
 
             // Title Row
             if(jsonObj.Item.Title != null && jsonObj.Item.Title.length !=0) {
@@ -466,7 +510,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             if(jsonObj.Item.Location != null && jsonObj.Item.Location.length !=0) {
                 tBodyRow = tBodyElem.insertRow(rowCount++);
                 tBodyCell = tBodyRow.insertCell(0);
-                tBodyCell.innerText = '<b>Location</b>';
+                tBodyCell.innerHTML = '<b>Location</b>';
                 tBodyCell = tBodyRow.insertCell(1);
                 if(jsonObj.Item.PostalCode != null && jsonObj.Item.PostalCode.length !=0)
                     tBodyCell.innerText = jsonObj.Item.Location + ", " + jsonObj.Item.PostalCode;
