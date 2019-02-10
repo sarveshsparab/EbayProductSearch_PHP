@@ -265,7 +265,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
             /* Seller message container */
             .details-seller-message{
-                display: block;
+                display: none;
                 margin-right: auto;
                 margin-left: auto;
                 height: 100px;
@@ -274,7 +274,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
             /* Similar items container */
             .details-similar-items{
-                display: block;
+                display: none;
                 margin-right: auto;
                 margin-left: auto;
                 height: 100px;
@@ -467,14 +467,36 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
     <!-- JS to toggle the seller message -->
     <script type="text/javascript">
         function toggleSellerMessage() {
+            var myDiv = document.getElementById('details-seller-message-container');
+            var otherDiv = document.getElementById('details-similar-items-container');
             toggleArrowAndText(document.getElementById('details-seller-message-toggle'));
+
+            if(myDiv.style.display == "none" || myDiv.style.display == ""){
+                myDiv.style.display = "block";
+                if(otherDiv.style.display == "block")
+                    toggleArrowAndText(document.getElementById('details-similar-items-toggle'));
+                otherDiv.style.display = "none";
+            } else {
+                myDiv.style.display = "none";
+            }
         }
     </script>
 
     <!-- JS to toggle the similar items -->
     <script type="text/javascript">
         function toggleSimilarItems() {
+            var myDiv = document.getElementById('details-similar-items-container');
+            var otherDiv = document.getElementById('details-seller-message-container');
             toggleArrowAndText(document.getElementById('details-similar-items-toggle'));
+
+            if(myDiv.style.display == "none" || myDiv.style.display == ""){
+                myDiv.style.display = "block";
+                if(otherDiv.style.display == "block")
+                    toggleArrowAndText(document.getElementById('details-seller-message-toggle'));
+                otherDiv.style.display = "none";
+            } else {
+                myDiv.style.display = "none";
+            }
         }
     </script>
         
