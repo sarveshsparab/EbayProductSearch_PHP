@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 40px;
-                border: 2px solid #b4b4b4;
+                border: 2.5px solid #b4b4b4;
                 height: 285px;
                 width: 600px;
             }
@@ -178,12 +178,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             /* Search results listing div CSS */
             .listings-container{
-                background-color: yellow;
                 display: block;
-                margin-left: 50px;
-                margin-right: 50px;
+                margin-left: 75px;
+                margin-right: 75px;
                 margin-top: 25px;
-                height: 300px;
+            }
+            .listings-container table{
+                width: 100%;
+                border-spacing: 0;
+            }
+            .listings-container table th{
+                border-top: 1.5px solid #b4b4b4;
+            }
+            .listings-container table td *{
+                max-height: 90px !important;
+            }
+            .listings-container table th:last-child{
+                border-right: 1.5px solid #b4b4b4;
+            }
+            .listings-container table th, td{
+                border-bottom: 1.5px solid #b4b4b4;
+                border-left: 1.5px solid #b4b4b4;
+                border-collapse: collapse;
+            }
+            .listings-container table tbody tr td:last-child{
+                border-right: 1.5px solid #b4b4b4;
             }
 
             .details-container{
@@ -340,14 +359,131 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 xhttp.open("POST", url, false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send(params);
-                results = JSON.parse(xhttp.responseText);
-                console.log(results);
+                ebayFindingsAPIResult = JSON.parse(xhttp.responseText);
+                console.log(ebayFindingsAPIResult);
+                var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
+                console.log(listingsTableHTML);
+
+                document.getElementById('listings-container').innerHTML = listingsTableHTML;
             }
         }, false);
-
-
     </script>
 
+    <!-- JS to build the search results listings -->
+    <script type="text/javascript">
+        function buildListingsTable(jsonObj) {
+            let colHeaders = ["Index", "Photo", "Name", "Price", "Condition", "Shipping Option"];
+
+            let tableElem = document.createElement('table');
+            tableElem.setAttribute("cellspacing","0");
+
+            let tHeadElem = tableElem.createTHead();
+            let tHeadRow = tHeadElem.insertRow(0);
+
+            for(let h=0; h < colHeaders.length; h++){
+                let tHeadCell = document.createElement('th');
+                tHeadCell.innerHTML = "<b>"+colHeaders[h]+"</b>";
+                tHeadCell.setAttribute("style", "text-align:center;");
+                tHeadRow.appendChild(tHeadCell);
+            }
+
+            let dataRows = jsonObj.findItemsAdvancedResponse[0].searchResult[0].item;
+            let tBodyElem = tableElem.createTBody();
+
+            for(let r=0; r < dataRows.length; r++){
+                let tBodyRow = tBodyElem.insertRow(r);
+                let cellCount = 0;
+                let tBodyCell;
+
+                // Index Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = r + 1;
+
+                // Photo Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                buildImageCell(tBodyCell, dataRows[r]);
+                tBodyCell.setAttribute("style","text-align: center;");
+
+                // Name Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = dataRows[r]["title"];
+
+                // Price Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = buildCurrencyString(dataRows[r]);
+
+                // Condition Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = buildConditionString(dataRows[r]);
+
+                // Shipping Option Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = buildShippingString(dataRows[r]);
+            }
+
+            return tableElem.outerHTML;
+        }
+    </script>
+
+    <!-- JS helper functions for Listings Table Generation -->
+    <script type="text/javascript">
+        function buildImageCell(cell, jsonObj) {
+            if(jsonObj.galleryURL !=null && jsonObj.galleryURL != "" && jsonObj.galleryURL.length != 0){
+                var imageElem = document.createElement('img');
+                imageElem.setAttribute("src", jsonObj.galleryURL[0]);
+                cell.appendChild(imageElem);
+            } else {
+                cell.innerHTML = "";
+            }
+        }
+        function buildCurrencyString(jsonObj) {
+            let currStr = '';
+            if (jsonObj.sellingStatus == null || jsonObj.sellingStatus.length == 0) {
+                currStr = 'N/A';
+            } else if (jsonObj.sellingStatus[0].currentPrice == null ||
+                jsonObj.sellingStatus[0].currentPrice.length == 0) {
+                currStr = 'N/A';
+            } else {
+                // if(jsonObj.sellingStatus[0].currentPrice[0].@currencyId == "USD") {
+                //     currStr = '$';
+                // } else {
+                //     currStr = '';
+                // }
+                currStr = '$';
+                currStr += jsonObj.sellingStatus[0].currentPrice[0].__value__;
+            }
+            return currStr;
+        }
+        function buildConditionString(jsonObj) {
+            let condStr = '';
+            if (jsonObj.condition == null || jsonObj.condition.length == 0) {
+                condStr = 'N/A';
+            } else if (jsonObj.condition[0].conditionDisplayName == null ||
+                jsonObj.condition[0].conditionDisplayName.length == 0) {
+                condStr = 'N/A';
+            } else {
+                condStr = jsonObj.condition[0].conditionDisplayName[0];
+            }
+            return condStr;
+        }
+        function buildShippingString(jsonObj) {
+            let shipStr = '';
+            if(jsonObj.shippingInfo == null || jsonObj.shippingInfo.length == 0) {
+                shipStr = 'N/A';
+            } else if(jsonObj.shippingInfo[0].shippingServiceCost == null ||
+                jsonObj.shippingInfo[0].shippingServiceCost.length == 0) {
+                shipStr = 'N/A';
+            } else {
+                if(jsonObj.shippingInfo[0].shippingServiceCost[0].__value__ > 0) {
+                    shipStr = '$';
+                    shipStr += jsonObj.shippingInfo[0].shippingServiceCost[0].__value__;
+                }else{
+                    shipStr = 'Free Shipping';
+                }
+            }
+            return shipStr;
+        }
+    </script>
 
     <!--  JS Script for search form validation and enable nearby search feature  -->
     <script type="text/javascript">
