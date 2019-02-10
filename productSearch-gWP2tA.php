@@ -235,8 +235,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             /* Item details div CSS */
             .details-table-container{
                 display: block;
-                margin-left: 315px;
-                margin-right: 315px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 750px;
                 margin-top: 25px;
             }
             .details-table-container table{
@@ -260,6 +261,44 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             }
             .details-table-container table tbody tr td:last-child{
                 border-right: 1.5px solid #b4b4b4;
+            }
+
+            /* Seller message container */
+            .details-seller-message{
+                margin-right: auto;
+                margin-left: auto;
+                height: 100px;
+                background-color: yellow;
+            }
+
+            /* Similar items container */
+            .details-similar-items{
+                margin-right: auto;
+                margin-left: auto;
+                height: 100px;
+                background-color: red;
+            }
+
+            /* Toggling section's arrow CSS */
+            .details-toggle{
+                display: block;
+                text-align: center;
+                margin-top: 25px;
+            }
+            .details-toggle p{
+                color: #646464;
+                margin-bottom: 0;
+            }
+            .details-toggle img{
+                height: 45px;
+                width: 100px;
+                transform: scale(0.5);
+            }
+            .details-arrow-down{
+                content: url("http://csci571.com/hw/hw6/images/arrow_down.png");
+            }
+            .details-arrow-up{
+                content: url("http://csci571.com/hw/hw6/images/arrow_up.png");
             }
 
             /* Misc */
@@ -382,19 +421,39 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
         </div>
 
+        <!-- Secondary divs begin -->
         <!-- Search results listing div -->
         <div id="listings-container"  class="listings-container">
 
         </div>
 
+        <!-- Divs to hold item specific content -->
         <div id="details-container"  class="details-container">
+
+            <!-- Table for item details -->
             <div id="details-table-container" class="details-table-container">
 
             </div>
-            <div id="details-seller-message-container">
+
+            <!-- Toggling arrow for seller message -->
+            <div id="details-seller-message-toggle" class="details-toggle">
+                <p>click to show seller message</p>
+                <img class="details-arrow-down" >
+            </div>
+
+            <!-- Seller message div -->
+            <div id="details-seller-message-container" class="details-seller-message">
 
             </div>
-            <div id="details-similar-items-container">
+
+            <!-- Toggling arrow for similar items -->
+            <div id="details-similar-items-toggle" class="details-toggle">
+                <p>click to show similar items</p>
+                <img class="details-arrow-down" >
+            </div>
+
+            <!-- Similar items div -->
+            <div id="details-similar-items-container" class="details-similar-items">
 
             </div>
         </div>
@@ -424,6 +483,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                     var itemDetailsTableHTML = buildItemDetailsTable(ebaySingleItemAPIResult);
                     document.getElementById('details-table-container').innerHTML = itemDetailsTableHTML;
                     document.getElementById('details-table-container').style.display = "block";
+
+
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
