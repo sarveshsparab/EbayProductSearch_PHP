@@ -283,7 +283,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
             /* Toggling section's arrow CSS */
             .details-toggle{
-                display: block;
+                display: none;
                 text-align: center;
                 margin-top: 25px;
                 cursor: pointer;
@@ -923,6 +923,10 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
         function hideSecondaryDivs() {
             document.getElementById('error-notify').style.display = "none";
             document.getElementById('listings-container').style.display = "none";
+            document.getElementById('details-similar-items-container').style.display = "none";
+            document.getElementById('details-similar-items-toggle').style.display = "none";
+            document.getElementById('details-seller-message-container').style.display = "none";
+            document.getElementById('details-seller-message-toggle').style.display = "none";
         }
     </script>
 
