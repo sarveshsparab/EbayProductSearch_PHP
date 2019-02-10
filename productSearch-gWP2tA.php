@@ -538,7 +538,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                     document.getElementById('details-table-container').innerHTML = itemDetailsTableHTML;
                     document.getElementById('details-table-container').style.display = "block";
 
-
+                    document.getElementById('details-seller-message-toggle').style.display = "block";
+                    document.getElementById('details-similar-items-toggle').style.display = "block";
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
