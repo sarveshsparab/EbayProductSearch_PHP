@@ -208,6 +208,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             .details-container{
                 background-color: darkgreen;
             }
+
+            /* Misc */
+            input:invalid {
+                box-shadow: none;
+            }
         </style>
     </head>
 
