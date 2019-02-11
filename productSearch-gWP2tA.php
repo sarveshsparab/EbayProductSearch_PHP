@@ -616,13 +616,37 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
                     document.getElementById('details-similar-items-container').innerText = "No Similar Item found.";
                 } else {
-                    //var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
+                    var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
+
+                    document.getElementById('details-similar-items-container').innerHTML = similarItemsTableHTML;
+                    document.getElementById('details-similar-items-container').style.display = "block";
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySimilarItemsAPI");
                 console.log("ERROR");
                 console.log(xhttp.responseText);
             }
+        }
+    </script>
+
+    <!-- JS to build similar items carousel table -->
+    <script type="text/javascript">
+        function buildSimilarItemsTable(jsonObj) {
+            let tableElem = document.createElement('table');
+            tableElem.setAttribute("cellspacing","0");
+
+            let dataCols = jsonObj.getSimilarItemsResponse.itemRecommendations.item;
+            let tBodyElem = tableElem.createTBody();
+            let tBodyRow = tBodyElem.insertRow(0);
+
+            for(let c=0; c < dataCols.length; c++) {
+
+                // Similar Item Cell
+                let tBodyCell = tBodyRow.insertCell(c);
+                tBodyCell.innerHTML = c + 1;
+            }
+
+            return tableElem.outerHTML;
         }
     </script>
 
