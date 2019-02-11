@@ -295,6 +295,14 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 height: 100%;
                 border: 0;
             }
+            .seller-message-iframe{
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                overflow-y: scroll;
+            }
+            .seller-message-iframe::-webkit-scrollbar {
+                width: 0 !important
+            }
             .no-seller-notify-div{
                 display: none;
                 margin-left: auto;
@@ -370,6 +378,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             }
             .clickableCell{
                 cursor: pointer;
+            }
+            .clickableCell:hover{
+                color: #a2a2a2;
             }
         </style>
     </head>
