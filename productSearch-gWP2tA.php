@@ -675,7 +675,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     tBodyCell = tBodyRow_title.insertCell(c);
                     let spanElem = document.createElement('span');
                     let titleElem = document.createTextNode(dataCols[c].title);
-                    spanElem.setAttribute("onclick", "fetchItemDetails("+dataCols[c].itemId+")");
+                    spanElem.setAttribute("onclick", "fetchSimilarItemDetails("+dataCols[c].itemId+")");
                     spanElem.setAttribute("class", "clickableCell");
                     spanElem.appendChild(titleElem);
                     tBodyCell.appendChild(spanElem);
@@ -699,6 +699,14 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             }
 
             return tableElem.outerHTML;
+        }
+    </script>
+
+    <!-- JS to reset the arrow direction when similar item clicked -->
+    <script type="text/javascript">
+        function fetchSimilarItemDetails(itemId) {
+            toggleArrowAndText(document.getElementById('details-similar-items-toggle'));
+            fetchItemDetails(itemId);
         }
     </script>
 
