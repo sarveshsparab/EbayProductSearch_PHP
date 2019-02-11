@@ -875,6 +875,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             if(validatePSForm()) {
 
                 hideSecondaryDivs();
+                document.getElementById('details-similar-items-container').classList.remove('no-similar-notify-div');
 
                 var url = psForm.action;
                 var params = "postType=1&";
