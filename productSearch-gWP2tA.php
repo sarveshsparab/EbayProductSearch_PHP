@@ -626,6 +626,24 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         }
     </script>
 
+    <!-- JS to check if any valid similar items have been fetched -->
+    <script type="text/javascript">
+        function anySimilarItemsRetrieved(jsonObj) {
+            var retrievedValidSimilarItems = true;
+            if(jsonObj == null || jsonObj.length == 0)
+                retrievedValidSimilarItems = false;
+            else if (jsonObj.getSimilarItemsResponse == null || jsonObj.getSimilarItemsResponse.length == 0)
+                retrievedValidSimilarItems = false;
+            else if (jsonObj.getSimilarItemsResponse.itemRecommendations == null ||
+                jsonObj.getSimilarItemsResponse.itemRecommendations.length == 0)
+                retrievedValidSimilarItems = false;
+            else if (jsonObj.getSimilarItemsResponse.itemRecommendations.item == null ||
+                jsonObj.getSimilarItemsResponse.itemRecommendations.item.length == 0)
+                retrievedValidSimilarItems = false;
+            return retrievedValidSimilarItems;
+        }
+    </script>
+
     <!-- JS to populate the iFrame with the seller message -->
     <script type="text/javascript">
         function buildSellerMessage(jsonObj) {
