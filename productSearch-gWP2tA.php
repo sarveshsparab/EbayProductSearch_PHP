@@ -883,7 +883,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             if(validatePSForm()) {
 
                 hideSecondaryDivs();
+                resetArrows();
                 document.getElementById('details-similar-items-container').classList.remove('no-similar-notify-div');
+                document.getElementById('details-seller-message-container').classList.remove('no-seller-notify-div');
 
                 var url = psForm.action;
                 var params = "postType=1&";
@@ -915,6 +917,23 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }
             }
         }, false);
+    </script>
+
+    <!-- JS to reset arrows to point downwards as default -->
+    <script type="text/javascript">
+        function resetArrows() {
+            var sellerMsgToggleDom = document.getElementById('details-seller-message-toggle');
+
+            if(sellerMsgToggleDom.childNodes[3].className == "details-arrow-up"){
+                toggleArrowAndText(sellerMsgToggleDom);
+            }
+
+            var similarItemsToggleDom = document.getElementById('details-similar-items-toggle');
+
+            if(similarItemsToggleDom.childNodes[3].className == "details-arrow-up"){
+                toggleArrowAndText(similarItemsToggleDom);
+            }
+        }
     </script>
 
     <!-- JS to check if the ebay finding API returned any valid result or not -->
