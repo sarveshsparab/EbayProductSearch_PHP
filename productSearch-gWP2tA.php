@@ -119,6 +119,29 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
     exit($ebayGetSingleItemAPICallResponse);
 }
 
+// PHP to fetch from getSimilarItemsAPI [ postType = 3 ]
+else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
+    $itemId = '';
+
+    if (isset($_POST['itemId']) && !empty($_POST['itemId'])) {
+        $itemId = $_POST['itemId'];
+    }
+
+    $ebayGetSimilarItemsAPICallURL = '';
+    $ebayGetSimilarItemsAPICallURL .= 'http://svcs.ebay.com/MerchandisingService?';
+    $ebayGetSimilarItemsAPICallURL .= 'OPERATION-NAME=getSimilarItems';
+    $ebayGetSimilarItemsAPICallURL .= '&SERVICE-NAME=MerchandisingService';
+    $ebayGetSimilarItemsAPICallURL .= '&SERVICE-VERSION=1.1.0';
+    $ebayGetSimilarItemsAPICallURL .= '&CONSUMER-ID='.'SarveshP-sarveshp-PRD-4a6d4ee64-9b547e7c';
+    $ebayGetSimilarItemsAPICallURL .= '&RESPONSE-DATA-FORMAT=JSON';
+    $ebayGetSimilarItemsAPICallURL .= '&REST-PAYLOAD';
+    $ebayGetSimilarItemsAPICallURL .= '&itemId='.$itemId;
+    $ebayGetSimilarItemsAPICallURL .= '&maxResults=8';
+
+    $ebayGetSimilarItemsAPICallResponse = file_get_contents($ebayGetSimilarItemsAPICallURL);
+    exit($ebayGetSimilarItemsAPICallResponse);
+}
+
 
 ?>
 
@@ -292,6 +315,19 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 margin-left: auto;
                 height: 100px;
                 background-color: red;
+            }
+            .no-similar-notify-div{
+                display: none;
+                margin: 30px auto 50px;
+                width: 750px;
+                height: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 16px;
+                background-color: #ffffff;
+                border: solid 1px #ddd;
+                outline-offset: 6px;
+                outline: solid 3px #ddd;
             }
 
             /* Toggling section's arrow CSS */
@@ -548,7 +584,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                     document.getElementById('details-table-container').style.display = "block";
 
                     buildSellerMessage(ebaySingleItemAPIResult);
-                    // buildSimilarItems();
+                    buildSimilarItems(itemId);
 
                     document.getElementById('details-seller-message-toggle').style.display = "block";
                     document.getElementById('details-similar-items-toggle').style.display = "block";
@@ -556,7 +592,36 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
                 console.log("ERROR");
-                console.log(ebaySingleItemAPIResult);
+                console.log(xhttp.responseText);
+            }
+        }
+    </script>
+
+    <!-- JS to fetch and populate similar items -->
+    <script type="text/javascript">
+        function buildSimilarItems(itemId) {
+            var psForm = document.getElementById("ps-form");
+            var url = psForm.action;
+            var params = "postType=3&itemId="+itemId;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", url, false);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(params);
+            try {
+                var ebaySimilarItemsAPIResult = JSON.parse(xhttp.responseText);
+
+                console.log(ebaySimilarItemsAPIResult);
+
+                if(!anySimilarItemsRetrieved(ebaySimilarItemsAPIResult)){
+                    document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
+                    document.getElementById('details-similar-items-container').innerText = "No Similar Item found.";
+                } else {
+                    //var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
+                }
+            }catch(e){
+                showErrorMessage("Malformed JSON returned from ebaySimilarItemsAPI");
+                console.log("ERROR");
+                console.log(xhttp.responseText);
             }
         }
     </script>
@@ -564,7 +629,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
     <!-- JS to populate the iFrame with the seller message -->
     <script type="text/javascript">
         function buildSellerMessage(jsonObj) {
-            console.log(jsonObj.Item.Description);
             if(jsonObj.Item.Description == null || jsonObj.Item.Description.length == 0){
                 document.getElementById('details-seller-message-container').className += " no-seller-notify-div";
                 document.getElementById('details-seller-message-container').innerText = "No Seller Message found.";
