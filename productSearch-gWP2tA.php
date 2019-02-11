@@ -311,10 +311,17 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             /* Similar items container */
             .details-similar-items{
                 display: none;
-                margin-right: auto;
-                margin-left: auto;
-                height: 100px;
-                background-color: red;
+                margin: 25px auto 50px;
+                padding: 10px 10px 15px;
+                width: 750px;
+                border: 1.5px solid #b4b4b4;
+                overflow-x: scroll;
+                scrollbar-width: none;
+                overflow: -moz-scrollbars-none;
+                -ms-overflow-style: none;
+            }
+            .details-similar-items::-webkit-scrollbar {
+                width: 0 !important
             }
             .no-similar-notify-div{
                 display: none;
@@ -328,6 +335,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 border: solid 1px #ddd;
                 outline-offset: 6px;
                 outline: solid 3px #ddd;
+                padding: 3px;
             }
 
             /* Toggling section's arrow CSS */
@@ -359,6 +367,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             /* Misc */
             input:invalid {
                 box-shadow: none;
+            }
+            .clickableCell{
+                cursor: pointer;
             }
         </style>
     </head>
@@ -619,7 +630,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
 
                     document.getElementById('details-similar-items-container').innerHTML = similarItemsTableHTML;
-                    document.getElementById('details-similar-items-container').style.display = "block";
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySimilarItemsAPI");
@@ -633,17 +643,59 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <script type="text/javascript">
         function buildSimilarItemsTable(jsonObj) {
             let tableElem = document.createElement('table');
+            tableElem.setAttribute("class", "details-similar-items-table");
             tableElem.setAttribute("cellspacing","0");
+            tableElem.setAttribute("style","border-spacing: 5px;");
 
             let dataCols = jsonObj.getSimilarItemsResponse.itemRecommendations.item;
             let tBodyElem = tableElem.createTBody();
-            let tBodyRow = tBodyElem.insertRow(0);
 
+            let tBodyRow_image = tBodyElem.insertRow(0);
+            let tBodyRow_title = tBodyElem.insertRow(1);
+            let tBodyRow_price = tBodyElem.insertRow(2);
+
+            // Similar Item Cell - Image Row
             for(let c=0; c < dataCols.length; c++) {
+                let tBodyCell;
+                if(dataCols[c].imageURL != null && dataCols[c].imageURL.length !=0) {
+                    tBodyCell = tBodyRow_image.insertCell(c);
+                    let imageElem = document.createElement('img');
+                    imageElem.setAttribute("src", dataCols[c].imageURL);
+                    tBodyCell.appendChild(imageElem);
+                } else {
+                    tBodyCell.innerText = '';
+                }
+                tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
+            }
 
-                // Similar Item Cell
-                let tBodyCell = tBodyRow.insertCell(c);
-                tBodyCell.innerHTML = c + 1;
+            // Similar Item Cell - Title Row
+            for(let c=0; c < dataCols.length; c++) {
+                let tBodyCell;
+                if(dataCols[c].title != null && dataCols[c].title.length !=0) {
+                    tBodyCell = tBodyRow_title.insertCell(c);
+                    let spanElem = document.createElement('span');
+                    let titleElem = document.createTextNode(dataCols[c].title);
+                    spanElem.setAttribute("onclick", "fetchItemDetails("+dataCols[c].itemId+")");
+                    spanElem.setAttribute("class", "clickableCell");
+                    spanElem.appendChild(titleElem);
+                    tBodyCell.appendChild(spanElem);
+                } else {
+                    tBodyCell.innerText = '';
+                }
+                tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
+            }
+
+            // Similar Item Cell - Price Row
+            for(let c=0; c < dataCols.length; c++) {
+                let tBodyCell;
+                if(dataCols[c].buyItNowPrice != null && dataCols[c].buyItNowPrice.length !=0) {
+                    tBodyCell = tBodyRow_price.insertCell(c);
+                    tBodyCell.setAttribute("style", "border: 0;");
+                    tBodyCell.innerHTML = "<b>$"+dataCols[c].buyItNowPrice.__value__+"</b>";
+                } else {
+                    tBodyCell.innerText = '';
+                }
+                tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
             }
 
             return tableElem.outerHTML;
@@ -945,7 +997,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             let spanElem = document.createElement('span');
             let titleElem = document.createTextNode(jsonObj["title"]);
             spanElem.setAttribute("onclick", "fetchItemDetails("+jsonObj.itemId[0]+")");
-            spanElem.setAttribute("style", "cursor: pointer");
+            spanElem.setAttribute("class", "clickableCell");
             spanElem.appendChild(titleElem);
             cell.appendChild(spanElem);
         }
@@ -1061,6 +1113,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             document.getElementById('details-similar-items-toggle').style.display = "none";
             document.getElementById('details-seller-message-container').style.display = "none";
             document.getElementById('details-seller-message-toggle').style.display = "none";
+            document.getElementById('details-table-container').style.display = "none";
         }
     </script>
 
