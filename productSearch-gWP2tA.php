@@ -228,10 +228,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 border-right: 1.5px solid #b4b4b4;
             }
 
-            .details-container{
-                margin-bottom: 40px;
-            }
-
             /* Item details div CSS */
             .details-table-container{
                 display: block;
@@ -268,8 +264,25 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 display: none;
                 margin-right: auto;
                 margin-left: auto;
-                height: 100px;
-                background-color: yellow;
+                overflow: hidden;
+            }
+            .details-seller-message iframe{
+                display: block;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            .no-seller-notify-div{
+                display: none;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 30px;
+                width: 750px;
+                height: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 16px;
+                background-color: #dddddd;
             }
 
             /* Similar items container */
@@ -433,35 +446,31 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
 
         </div>
 
-        <!-- Divs to hold item specific content -->
-        <div id="details-container"  class="details-container">
+        <!-- Table for item details -->
+        <div id="details-table-container" class="details-table-container">
 
-            <!-- Table for item details -->
-            <div id="details-table-container" class="details-table-container">
+        </div>
 
-            </div>
+        <!-- Toggling arrow for seller message -->
+        <div id="details-seller-message-toggle" class="details-toggle" onclick="toggleSellerMessage()">
+            <p>click to <span>show</span> seller message</p>
+            <img class="details-arrow-down" >
+        </div>
 
-            <!-- Toggling arrow for seller message -->
-            <div id="details-seller-message-toggle" class="details-toggle" onclick="toggleSellerMessage()">
-                <p>click to <span>show</span> seller message</p>
-                <img class="details-arrow-down" >
-            </div>
+        <!-- Seller message div -->
+        <div id="details-seller-message-container" class="details-seller-message">
+            <iframe id="seller-message-iframe" allowfullscreen></iframe>
+        </div>
 
-            <!-- Seller message div -->
-            <div id="details-seller-message-container" class="details-seller-message">
+        <!-- Toggling arrow for similar items -->
+        <div id="details-similar-items-toggle" class="details-toggle" onclick="toggleSimilarItems()">
+            <p>click to <span>show</span> similar items</p>
+            <img class="details-arrow-down" >
+        </div>
 
-            </div>
+        <!-- Similar items div -->
+        <div id="details-similar-items-container" class="details-similar-items">
 
-            <!-- Toggling arrow for similar items -->
-            <div id="details-similar-items-toggle" class="details-toggle" onclick="toggleSimilarItems()">
-                <p>click to <span>show</span> similar items</p>
-                <img class="details-arrow-down" >
-            </div>
-
-            <!-- Similar items div -->
-            <div id="details-similar-items-container" class="details-similar-items">
-
-            </div>
         </div>
 
     <!-- JS to toggle the seller message -->
@@ -538,6 +547,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                     document.getElementById('details-table-container').innerHTML = itemDetailsTableHTML;
                     document.getElementById('details-table-container').style.display = "block";
 
+                    buildSellerMessage(ebaySingleItemAPIResult);
+                    // buildSimilarItems();
+
                     document.getElementById('details-seller-message-toggle').style.display = "block";
                     document.getElementById('details-similar-items-toggle').style.display = "block";
                 }
@@ -545,6 +557,21 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
                 console.log("ERROR");
                 console.log(ebaySingleItemAPIResult);
+            }
+        }
+    </script>
+
+    <!-- JS to populate the iFrame with the seller message -->
+    <script type="text/javascript">
+        function buildSellerMessage(jsonObj) {
+            console.log(jsonObj.Item.Description);
+            if(jsonObj.Item.Description == null || jsonObj.Item.Description.length == 0){
+                document.getElementById('details-seller-message-container').className += " no-seller-notify-div";
+                document.getElementById('details-seller-message-container').innerText = "No Seller Message found.";
+            } else {
+                let sellerMsg = jsonObj.Item.Description;
+                let iFrameElem = document.getElementById('seller-message-iframe');
+                iFrameElem.setAttribute("srcdoc", sellerMsg);
             }
         }
     </script>
