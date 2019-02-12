@@ -761,7 +761,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to adjust the iFrame height according to content -->
     <script type="text/javascript">
         function calculateAndSetHeight(iFrameElem) {
-            let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 25;
+            let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 40;
             iFrameElem.setAttribute("style", "height: " + contentHeight + "px;");
         }
     </script>
