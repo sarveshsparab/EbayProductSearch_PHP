@@ -512,7 +512,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         <!-- Toggling arrow for seller message -->
         <div id="details-seller-message-toggle" class="details-toggle" onclick="toggleSellerMessage()">
             <p>click to <span>show</span> seller message</p>
-            <img class="details-arrow-down" >
+            <img class="details-arrow-down" src="http://csci571.com/hw/hw6/images/arrow_down.png">
         </div>
 
         <!-- Seller message div -->
@@ -523,7 +523,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         <!-- Toggling arrow for similar items -->
         <div id="details-similar-items-toggle" class="details-toggle" onclick="toggleSimilarItems()">
             <p>click to <span>show</span> similar items</p>
-            <img class="details-arrow-down" >
+            <img class="details-arrow-down" src="http://csci571.com/hw/hw6/images/arrow_down.png">
         </div>
 
         <!-- Similar items div -->
@@ -573,9 +573,13 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             if(domObj.childNodes[3].className == "details-arrow-down"){
                 domObj.childNodes[1].childNodes[1].innerText = "hide";
                 domObj.childNodes[3].className = "details-arrow-up";
+                domObj.childNodes[3].removeAttribute("src");
+                domObj.childNodes[3].setAttribute("src",'http://csci571.com/hw/hw6/images/arrow_up.png');
             }else if (domObj.childNodes[3].className == "details-arrow-up"){
                 domObj.childNodes[1].childNodes[1].innerText = "show";
                 domObj.childNodes[3].className = "details-arrow-down";
+                domObj.childNodes[3].removeAttribute("src");
+                domObj.childNodes[3].setAttribute("src",'http://csci571.com/hw/hw6/images/arrow_down.png');
             }
         }
     </script>
