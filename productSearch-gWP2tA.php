@@ -540,6 +540,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
             if(myDiv.style.display == "none" || myDiv.style.display == ""){
                 myDiv.style.display = "block";
+                calculateAndSetHeight(document.getElementById('seller-message-iframe'));
                 if(otherDiv.style.display == "block")
                     toggleArrowAndText(document.getElementById('details-similar-items-toggle'));
                 otherDiv.style.display = "none";
@@ -754,6 +755,14 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 let iFrameElem = document.getElementById('seller-message-iframe');
                 iFrameElem.setAttribute("srcdoc", sellerMsg);
             }
+        }
+    </script>
+
+    <!-- JS to adjust the iFrame height according to content -->
+    <script type="text/javascript">
+        function calculateAndSetHeight(iFrameElem) {
+            let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 25;
+            iFrameElem.setAttribute("style", "height: " + contentHeight + "px;");
         }
     </script>
 
