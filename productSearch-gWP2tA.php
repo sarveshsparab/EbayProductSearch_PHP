@@ -91,7 +91,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
         }
     }
     $ebayFindingAPICallURL .='&buyerPostalCode='.$zipCode;
-    $ebayFindingAPICallURL .='&MaxDistance='.$miles;
+
+    $ebayFindingAPICallURL .='&itemFilter.name=MaxDistance';
+    $ebayFindingAPICallURL .='&itemFilter.value='.$miles;
 
     $ebayFindingAPICallResponse = file_get_contents($ebayFindingAPICallURL);
     exit($ebayFindingAPICallResponse);
