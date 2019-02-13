@@ -939,7 +939,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }catch(e){
                     showErrorMessage("Malformed JSON returned from ebayFindingsApi");
                     console.log("ERROR");
-                    console.log(ebayFindingsAPIResult);
+                    console.log(xhttp.responseText);
                 }
             }
         }, false);
