@@ -1211,6 +1211,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to show the error messages on screen -->
     <script type="text/javascript">
         function showErrorMessage(msg) {
+            hideSecondaryDivs();
             var errorDiv = document.getElementById('error-notify');
             errorDiv.innerText = msg;
             errorDiv.style.display = "block";
