@@ -58,6 +58,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
         $zipCode = $_POST['ps-here-zipcode'];
     }
 
+    $itemFilterNameCount = 0;
+
     $ebayFindingAPICallURL = '';
     $ebayFindingAPICallURL .= 'http://svcs.ebay.com/services/search/FindingService/v1?';
     $ebayFindingAPICallURL .= 'OPERATION-NAME=findItemsAdvanced';
@@ -67,33 +69,41 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&REST-PAYLOAD';
     $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
     $ebayFindingAPICallURL .='&keywords='.$keyword;
+    $ebayFindingAPICallURL .='&buyerPostalCode='.$zipCode;
     if($category != -1) {
         $ebayFindingAPICallURL .= '&categoryId=' . $category;
     }
     if($shipping_free) {
-        $ebayFindingAPICallURL .= '&itemFilter.name=FreeShippingOnly';
-        $ebayFindingAPICallURL .= '&itemFilter.value=true';
+        $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').name=FreeShippingOnly';
+        $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').value=true';
+        $itemFilterNameCount++;
     }
     if($shipping_local) {
-        $ebayFindingAPICallURL .= '&itemFilter.name=LocalPickupOnly';
-        $ebayFindingAPICallURL .= '&itemFilter.value=true';
+        $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').name=LocalPickupOnly';
+        $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').value=true';
+        $itemFilterNameCount++;
     }
     if($condition_new || $condition_used || $condition_unspecified) {
-        $ebayFindingAPICallURL .= '&itemFilter.name=Condition';
+        $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').name=Condition';
+
+        $itemFilterValueCount = 0;
+
         if($condition_new) {
-            $ebayFindingAPICallURL .= '&itemFilter.value=New';
+            $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').value('.$itemFilterValueCount.')=New';
+            $itemFilterValueCount++;
         }
         if($condition_used) {
-            $ebayFindingAPICallURL .= '&itemFilter.value=Used';
+            $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').value('.$itemFilterValueCount.')=Used';
+            $itemFilterValueCount++;
         }
         if($condition_unspecified) {
-            $ebayFindingAPICallURL .= '&itemFilter.value=Unspecified';
+            $ebayFindingAPICallURL .= '&itemFilter('.$itemFilterNameCount.').value('.$itemFilterValueCount.')=Unspecified';
+            $itemFilterValueCount++;
         }
+        $itemFilterNameCount++;
     }
-    $ebayFindingAPICallURL .='&buyerPostalCode='.$zipCode;
-
-    $ebayFindingAPICallURL .='&itemFilter.name=MaxDistance';
-    $ebayFindingAPICallURL .='&itemFilter.value='.$miles;
+    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=MaxDistance';
+    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value='.$miles;
 
     $ebayFindingAPICallResponse = file_get_contents($ebayFindingAPICallURL);
     exit($ebayFindingAPICallResponse);
