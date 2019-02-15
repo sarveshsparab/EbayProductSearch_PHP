@@ -1138,8 +1138,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             document.getElementById('ps-miles').disabled = !isNearByChecked;
             document.getElementById('ps-here-radio').disabled = !isNearByChecked;
             document.getElementById('ps-zip-radio').disabled = !isNearByChecked;
-            document.getElementById('ps-zip-code').disabled = document.getElementById('ps-zip-radio').checked;
-            if(document.getElementById('ps-zip-radio').checked){
+            document.getElementById('ps-zip-code').disabled = !isNearByChecked;
+            if(document.getElementById('ps-zip-radio').checked && isNearByChecked){
                 document.getElementById('ps-zip-code').disabled = false;
             }else{
                 document.getElementById('ps-zip-code').disabled = true;
