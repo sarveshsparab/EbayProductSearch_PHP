@@ -69,7 +69,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&REST-PAYLOAD';
     $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
     $ebayFindingAPICallURL .='&keywords='.$keyword;
-    $ebayFindingAPICallURL .='&buyerPostalCode='.$zipCode;
+    if(isset($_POST['ps-nearby-location']) && !empty($_POST['ps-nearby-location'])) {
+        $ebayFindingAPICallURL .= '&buyerPostalCode=' . $zipCode;
+    }
     if($category != -1) {
         $ebayFindingAPICallURL .= '&categoryId=' . $category;
     }
