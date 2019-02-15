@@ -19,7 +19,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $shipping_local = false;
     $shipping_free = false;
     $miles = 10;
-    $zipCode_entered = '';
     $zipCode = '';
 
     if (isset($_POST['ps-keyword']) && !empty($_POST['ps-keyword'])) {
@@ -50,12 +49,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     if (isset($_POST['ps-miles']) && !empty($_POST['ps-miles'])) {
         $miles = $_POST['ps-miles'];
     }
-
-    if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
-        $zipCode_entered = $_POST['ps-zip-code'];
-        $zipCode = $zipCode_entered;
-    } else if (isset($_POST['ps-here-zipcode']) && !empty($_POST['ps-here-zipcode'])) {
-        $zipCode = $_POST['ps-here-zipcode'];
+    if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby'])) {
+        if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
+            $zipCode = $_POST['ps-zip-code'];
+        } else if (isset($_POST['ps-here-zipcode']) && !empty($_POST['ps-here-zipcode'])) {
+            $zipCode = $_POST['ps-here-zipcode'];
+        }
     }
 
     $itemFilterNameCount = 0;
@@ -69,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&REST-PAYLOAD';
     $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
     $ebayFindingAPICallURL .='&keywords='.$keyword;
-    if(isset($_POST['ps-nearby-location']) && !empty($_POST['ps-nearby-location'])) {
+    if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby']) && $zipCode!='') {
         $ebayFindingAPICallURL .= '&buyerPostalCode=' . $zipCode;
     }
     if($category != -1) {
@@ -104,7 +103,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
         }
         $itemFilterNameCount++;
     }
-    if(isset($_POST['ps-nearby-location']) && !empty($_POST['ps-nearby-location'])) {
+    if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby']) && $zipCode!='') {
         $ebayFindingAPICallURL .= '&itemFilter(' . $itemFilterNameCount . ').name=MaxDistance';
         $ebayFindingAPICallURL .= '&itemFilter(' . $itemFilterNameCount . ').value=' . $miles;
         $itemFilterNameCount++;
