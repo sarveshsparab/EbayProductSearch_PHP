@@ -102,11 +102,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
         }
         $itemFilterNameCount++;
     }
-    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=MaxDistance';
-    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value='.$miles;
-
-    $itemFilterNameCount++;
-
+    if(isset($_POST['ps-nearby-location']) && !empty($_POST['ps-nearby-location'])) {
+        $ebayFindingAPICallURL .= '&itemFilter(' . $itemFilterNameCount . ').name=MaxDistance';
+        $ebayFindingAPICallURL .= '&itemFilter(' . $itemFilterNameCount . ').value=' . $miles;
+        $itemFilterNameCount++;
+    }
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=HideDuplicateItems';
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value=true';
 
