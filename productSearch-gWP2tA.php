@@ -998,7 +998,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to build the search results listings -->
     <script type="text/javascript">
         function buildListingsTable(jsonObj) {
-            let colHeaders = ["Index", "Photo", "Name", "Price", "Condition", "Shipping Option"];
+            let colHeaders = ["Index", "Photo", "Name", "Price", "Zip code", "Condition", "Shipping Option"];
 
             let tableElem = document.createElement('table');
             tableElem.setAttribute("cellspacing","0");
@@ -1037,6 +1037,10 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 // Price Cell
                 tBodyCell = tBodyRow.insertCell(cellCount++);
                 tBodyCell.innerHTML = buildCurrencyString(dataRows[r]);
+
+                // Zip code Cell
+                tBodyCell = tBodyRow.insertCell(cellCount++);
+                tBodyCell.innerHTML = buildZipCodeString(dataRows[r]);
 
                 // Condition Cell
                 tBodyCell = tBodyRow.insertCell(cellCount++);
@@ -1087,6 +1091,13 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 currStr += jsonObj.sellingStatus[0].currentPrice[0].__value__;
             }
             return currStr;
+        }
+        function buildZipCodeString(jsonObj) {
+            if(jsonObj.postalCode !=null && jsonObj.postalCode != "" && jsonObj.postalCode.length != 0){
+                return jsonObj.postalCode;
+            } else {
+                return "";
+            }
         }
         function buildConditionString(jsonObj) {
             let condStr = '';
