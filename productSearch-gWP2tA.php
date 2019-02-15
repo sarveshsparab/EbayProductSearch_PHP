@@ -105,6 +105,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=MaxDistance';
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value='.$miles;
 
+    $itemFilterNameCount++;
+
+    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=HideDuplicateItems';
+    $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value=true';
+
     $ebayFindingAPICallResponse = file_get_contents($ebayFindingAPICallURL);
     exit($ebayFindingAPICallResponse);
 }
