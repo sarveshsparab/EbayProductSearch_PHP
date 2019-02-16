@@ -1097,7 +1097,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             if(jsonObj.postalCode !=null && jsonObj.postalCode != "" && jsonObj.postalCode.length != 0){
                 return jsonObj.postalCode;
             } else {
-                return "";
+                return "N/A";
             }
         }
         function buildConditionString(jsonObj) {
