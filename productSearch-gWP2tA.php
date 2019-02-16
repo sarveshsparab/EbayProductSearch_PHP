@@ -67,7 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&RESPONSE-DATA-FORMAT=JSON';
     $ebayFindingAPICallURL .='&REST-PAYLOAD';
     $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
-    $ebayFindingAPICallURL .='&keywords='.$keyword;
+    $ebayFindingAPICallURL .='&keywords='.urlencode($keyword);
     if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby']) && $zipCode!='') {
         $ebayFindingAPICallURL .= '&buyerPostalCode=' . $zipCode;
     }
