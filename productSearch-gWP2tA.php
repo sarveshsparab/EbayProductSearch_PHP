@@ -609,7 +609,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to fetch individual item details -->
     <script type="text/javascript">
         function fetchItemDetails(itemId) {
-            console.log("Fetching item details : "+itemId);
             hideSecondaryDivs();
 
             var psForm = document.getElementById("ps-form");
@@ -618,11 +617,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", url, false);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            jsLog("Parameters for Ebay Item Details API call", params);
             xhttp.send(params);
             try {
                 var ebaySingleItemAPIResult = JSON.parse(xhttp.responseText);
-
-                console.log(ebaySingleItemAPIResult);
+                jsLog("Ebay Item Details API Response", ebaySingleItemAPIResult);
 
                 if(!anyItemDetailsRetrieved(ebaySingleItemAPIResult)){
                     showErrorMessage("No Item Details have been found");
@@ -654,11 +653,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", url, false);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            jsLog("Parameters for Ebay Similar Items API call", params);
             xhttp.send(params);
             try {
                 var ebaySimilarItemsAPIResult = JSON.parse(xhttp.responseText);
-
-                console.log(ebaySimilarItemsAPIResult);
+                jsLog("Ebay Similar Items API Response", ebaySimilarItemsAPIResult);
 
                 if(!anySimilarItemsRetrieved(ebaySimilarItemsAPIResult)){
                     document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
@@ -784,6 +783,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         function calculateAndSetHeight(iFrameElem) {
             let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 40;
             iFrameElem.setAttribute("style", "height: " + contentHeight + "px;");
+            jsLog("Dynamic iFrame height calculated", contentHeight);
         }
     </script>
 
@@ -948,11 +948,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.open("POST", url, false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                jsLog("Parameters for Ebay Findings API call", params);
                 xhttp.send(params);
                 try {
                     var ebayFindingsAPIResult = JSON.parse(xhttp.responseText);
-
-                    console.log(ebayFindingsAPIResult);
+                    jsLog("Ebay Findings API Response", ebayFindingsAPIResult);
 
                     if(!anyItemsRetrieved(ebayFindingsAPIResult)){
                         showErrorMessage("No Records has been found");
@@ -1092,11 +1092,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 jsonObj.sellingStatus[0].currentPrice.length == 0) {
                 currStr = 'N/A';
             } else {
-                // if(jsonObj.sellingStatus[0].currentPrice[0].@currencyId == "USD") {
-                //     currStr = '$';
-                // } else {
-                //     currStr = '';
-                // }
                 currStr = '$';
                 currStr += jsonObj.sellingStatus[0].currentPrice[0].__value__;
             }
@@ -1230,11 +1225,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     showErrorMessage("Miles cannot be empty");
                     formState = false;
                 }
-                if(document.getElementById('ps-miles').value < 0){
+                else if(document.getElementById('ps-miles').value < 0){
                     showErrorMessage("Miles cannot be negative");
                     formState = false;
                 }
-                if(! /^\d+$/.test(document.getElementById('ps-miles').value)){
+                else if(! /^\d+$/.test(document.getElementById('ps-miles').value)){
                     showErrorMessage("Miles have to be numeric");
                     formState = false;
                 }
@@ -1298,6 +1293,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             }else{
                 try{
                     var ipAPIJSONObj = JSON.parse(ipAPIJSON);
+                    jsLog("IP-API Responce", ipAPIJSONObj);
                 }
                 catch(e){
                     showErrorMessage("Malformed JSON encountered at URL [ "+ipAPIURL+" ]");
@@ -1305,6 +1301,15 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 document.getElementById('ps-here-zipcode').value = ipAPIJSONObj["zip"];
                 document.getElementById('ps-submit').disabled = false;
             }
+        }
+    </script>
+
+    <!-- JS to log details on the browsers console -->
+    <script type="text/javascript">
+        function jsLog(msg, obj) {
+            console.log(msg + " : ");
+            console.log(obj);
+            console.log("------------------------------------------------------------------------------------------\n");
         }
     </script>
 
