@@ -111,6 +111,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').name=HideDuplicateItems';
     $ebayFindingAPICallURL .='&itemFilter('.$itemFilterNameCount.').value=true';
 
+    syslog(LOG_INFO, 'Ebay Finding API Call URL : ');
+    syslog(LOG_INFO, $ebayFindingAPICallURL);
+
     $ebayFindingAPICallResponse = file_get_contents($ebayFindingAPICallURL);
     exit($ebayFindingAPICallResponse);
 }
@@ -132,6 +135,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 2) {
     $ebayGetSingleItemAPICallURL .= '&version=967';
     $ebayGetSingleItemAPICallURL .= '&ItemID='.$itemId;
     $ebayGetSingleItemAPICallURL .= '&IncludeSelector=Description,Details,ItemSpecifics';
+
+    syslog(LOG_INFO, 'Ebay Single Item Details API Call URL : ');
+    syslog(LOG_INFO, $ebayGetSingleItemAPICallURL);
 
     $ebayGetSingleItemAPICallResponse = file_get_contents($ebayGetSingleItemAPICallURL);
     exit($ebayGetSingleItemAPICallResponse);
@@ -155,6 +161,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     $ebayGetSimilarItemsAPICallURL .= '&REST-PAYLOAD';
     $ebayGetSimilarItemsAPICallURL .= '&itemId='.$itemId;
     $ebayGetSimilarItemsAPICallURL .= '&maxResults=8';
+
+    syslog(LOG_INFO, 'Ebay Similar Items API Call URL : ');
+    syslog(LOG_INFO, $ebayGetSimilarItemsAPICallURL);
 
     $ebayGetSimilarItemsAPICallResponse = file_get_contents($ebayGetSimilarItemsAPICallURL);
     exit($ebayGetSimilarItemsAPICallResponse);
