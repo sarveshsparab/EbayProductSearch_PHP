@@ -400,6 +400,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             .clickableCell:hover{
                 color: #a2a2a2;
             }
+            .disabledCell {
+                background-color: #b4b4b4;
+            }
         </style>
     </head>
 
@@ -910,6 +913,12 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                         tBodyCell.innerText = specificsRows[r].Value[0];
                     }
                 }
+            } else {
+                tBodyRow = tBodyElem.insertRow(rowCount++);
+                tBodyCell = tBodyRow.insertCell(0);
+                tBodyCell.innerHTML = '<b>No Detail Info from Seller</b>';
+                tBodyCell = tBodyRow.insertCell(1);
+                tBodyCell.setAttribute("class", "disabledCell");
             }
 
             return tableElem.outerHTML;
