@@ -67,7 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
     $ebayFindingAPICallURL .='&RESPONSE-DATA-FORMAT=JSON';
     $ebayFindingAPICallURL .='&REST-PAYLOAD';
     $ebayFindingAPICallURL .='&paginationInput.entriesPerPage=20';
-    $ebayFindingAPICallURL .='&keywords='.urlencode($keyword);
+    $ebayFindingAPICallURL .='&keywords='.rawurlencode($keyword);
     if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby']) && $zipCode!='') {
         $ebayFindingAPICallURL .= '&buyerPostalCode=' . $zipCode;
     }
@@ -790,8 +790,10 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to adjust the iFrame height according to content -->
     <script type="text/javascript">
         function calculateAndSetHeight(iFrameElem) {
+            // iFrameElem.height = "";
             let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 40;
-            iFrameElem.setAttribute("style", "height: " + contentHeight + "px;");
+            //iFrameElem.height = contentHeight + "px";
+            iFrameElem.style.height = contentHeight + "px";
             jsLog("Dynamic iFrame height calculated", contentHeight);
         }
     </script>
@@ -1171,7 +1173,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         }
     </script>
 
-    <!--  JS to reset the form data when clear pressed -->
+    <!-- JS to reset the form data when clear pressed -->
     <script type="text/javascript">
         function clearPSForm() {
             document.getElementById('ps-keyword').value = '';
