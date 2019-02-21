@@ -1146,7 +1146,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         }
     </script>
 
-    <!--  JS Script for search form validation and enable nearby search feature  -->
+    <!-- JS Script for search form validation and enable nearby search feature  -->
     <script type="text/javascript">
         function toggleNearByState() {
             let isNearByChecked = document.getElementById('ps-enable-nearby').checked;
