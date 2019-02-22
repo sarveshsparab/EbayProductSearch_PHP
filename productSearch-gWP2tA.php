@@ -283,7 +283,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
-                width: 750px;
+                width: 700px;
                 margin-top: 25px;
             }
             .details-table-container table{
@@ -315,6 +315,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 margin-right: auto;
                 margin-left: auto;
                 overflow: hidden;
+                width: 1000px;
             }
             .details-seller-message iframe{
                 display: block;
@@ -690,7 +691,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             let tableElem = document.createElement('table');
             tableElem.setAttribute("class", "details-similar-items-table");
             tableElem.setAttribute("cellspacing","0");
-            tableElem.setAttribute("style","border-spacing: 5px;");
+            tableElem.setAttribute("style","border-spacing: 50px 5px;");
 
             let dataCols = jsonObj.getSimilarItemsResponse.itemRecommendations.item;
             let tBodyElem = tableElem.createTBody();
