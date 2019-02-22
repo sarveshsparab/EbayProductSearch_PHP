@@ -783,6 +783,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 let sellerMsg = jsonObj.Item.Description;
                 let iFrameElem = document.getElementById('seller-message-iframe');
                 iFrameElem.setAttribute("srcdoc", sellerMsg);
+                iFrameElem.setAttribute("scrolling", "no");
             }
         }
     </script>
@@ -790,9 +791,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to adjust the iFrame height according to content -->
     <script type="text/javascript">
         function calculateAndSetHeight(iFrameElem) {
-            // iFrameElem.height = "";
-            let contentHeight = iFrameElem.contentWindow.document.body.scrollHeight + 40;
-            //iFrameElem.height = contentHeight + "px";
+            iFrameElem.style.height = "";
+            let contentHeight = iFrameElem.contentWindow.document.documentElement.scrollHeight;
             iFrameElem.style.height = contentHeight + "px";
             jsLog("Dynamic iFrame height calculated", contentHeight);
         }
