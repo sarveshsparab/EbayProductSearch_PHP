@@ -372,6 +372,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 outline-offset: 6px;
                 outline: solid 3px #ddd;
                 padding: 3px;
+                overflow: hidden;
             }
 
             /* Toggling section's arrow CSS */
@@ -671,7 +672,10 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
                 if(!anySimilarItemsRetrieved(ebaySimilarItemsAPIResult)){
                     document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
-                    document.getElementById('details-similar-items-container').innerText = "No Similar Item found.";
+                    let spanElem = document.createElement('span');
+                    spanElem.innerText = "No Similar Item found.";
+                    spanElem.style.padding = "1px 0px";
+                    document.getElementById('details-similar-items-container').appendChild(spanElem);
                 } else {
                     var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
 
