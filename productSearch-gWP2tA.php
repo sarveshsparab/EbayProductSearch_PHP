@@ -845,6 +845,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 let imageElem = document.createElement('img');
                 imageElem.setAttribute("src", jsonObj.Item.PictureURL[0]);
                 tBodyCell.appendChild(imageElem);
+                tBodyCell.style.paddingLeft = "0px";
             }
 
             // Title Row
