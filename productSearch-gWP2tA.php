@@ -488,8 +488,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                             <span>Enable Nearby Search</span>
                     </label>
 
-                    <input type="text" style="width: 60px; margin-left: 30px;" id="ps-miles" name="ps-miles"
-                        value="<?php echo isset($_POST['ps-miles']) ? $_POST['ps-miles'] : '10' ?>"
+                    <input type="text" style="width: 60px; margin-left: 30px;" id="ps-miles" name="ps-miles" placeholder="10"
+                        value="<?php echo isset($_POST['ps-miles']) ? $_POST['ps-miles'] : '' ?>"
                         <?php if(!isset($_POST['ps-enable-nearby'])){ ?> disabled="disabled" <?php } ?>
                         autocomplete="off" >
                     <label for="ps-miles" style="display: inline"><span>miles from</span></label>
