@@ -672,6 +672,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
                 if(!anySimilarItemsRetrieved(ebaySimilarItemsAPIResult)){
                     document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
+                    document.getElementById('details-similar-items-container').innerHTML = "";
                     let spanElem = document.createElement('span');
                     spanElem.innerText = "No Similar Item found.";
                     spanElem.style.padding = "1px 0px";
