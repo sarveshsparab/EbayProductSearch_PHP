@@ -1243,14 +1243,14 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 //     showErrorMessage("Miles cannot be empty");
                 //     formState = false;
                 // }
-                else if(document.getElementById('ps-miles').value < 0){
-                    showErrorMessage("Miles cannot be negative");
-                    formState = false;
-                }
-                else if(! /^\d+$/.test(document.getElementById('ps-miles').value)){
-                    showErrorMessage("Miles have to be numeric");
-                    formState = false;
-                }
+                // else if(document.getElementById('ps-miles').value < 0){
+                //     showErrorMessage("Miles cannot be negative");
+                //     formState = false;
+                // }
+                // else if(! /^\d+$/.test(document.getElementById('ps-miles').value)){
+                //     showErrorMessage("Miles have to be numeric");
+                //     formState = false;
+                // }
             }
 
             return formState;
