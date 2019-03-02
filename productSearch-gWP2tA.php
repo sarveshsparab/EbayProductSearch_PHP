@@ -1238,11 +1238,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }
 
                 // Validations for miles radius
-                if(document.getElementById('ps-miles').value == "" ||
-                    document.getElementById('ps-miles').value.length == 0 ){
-                    showErrorMessage("Miles cannot be empty");
-                    formState = false;
-                }
+                // if(document.getElementById('ps-miles').value == "" ||
+                //     document.getElementById('ps-miles').value.length == 0 ){
+                //     showErrorMessage("Miles cannot be empty");
+                //     formState = false;
+                // }
                 else if(document.getElementById('ps-miles').value < 0){
                     showErrorMessage("Miles cannot be negative");
                     formState = false;
