@@ -283,7 +283,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
-                width: 700px;
+                width: fit-content;
+                max-width: 1000px !important;
                 margin-top: 25px;
             }
             .details-table-container table{
