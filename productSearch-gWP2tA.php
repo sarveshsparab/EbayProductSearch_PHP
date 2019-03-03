@@ -1162,10 +1162,12 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             document.getElementById('ps-here-radio').disabled = !isNearByChecked;
             document.getElementById('ps-zip-radio').disabled = !isNearByChecked;
             document.getElementById('ps-zip-code').disabled = !isNearByChecked;
-            if(document.getElementById('ps-zip-radio').checked && isNearByChecked){
-                document.getElementById('ps-zip-code').disabled = false;
-            }else{
-                document.getElementById('ps-zip-code').disabled = true;
+
+            if(!isNearByChecked) {
+                document.getElementById('ps-miles').value = '';
+                document.getElementById('ps-zip-code').value = '';
+                document.getElementById('ps-here-radio').checked = true;
+                document.getElementById('ps-zip-radio').checked = false;
             }
         }
     </script>
