@@ -910,7 +910,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 tBodyCell = tBodyRow.insertCell(0);
                 tBodyCell.innerHTML = '<b>Return Policy (US)</b>';
                 tBodyCell = tBodyRow.insertCell(1);
-                tBodyCell.innerText = jsonObj.Item.ReturnPolicy.ReturnsAccepted + " " +
+                tBodyCell.innerText = jsonObj.Item.ReturnPolicy.ReturnsAccepted + " within " +
                     jsonObj.Item.ReturnPolicy.ReturnsWithin;
             }
 
