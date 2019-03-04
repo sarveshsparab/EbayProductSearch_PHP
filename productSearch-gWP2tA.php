@@ -564,6 +564,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
         </div>
 
+    <!-- JS to set global debug flag -->
+    <script type="text/javascript">
+        DEBUG = true;
+    </script>
+
     <!-- JS to toggle the seller message -->
     <script type="text/javascript">
         function toggleSellerMessage() {
@@ -650,8 +655,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
-                console.log("ERROR");
-                console.log(xhttp.responseText);
+                jsLog("ERROR", xhttp.responseText);
             }
         }
     </script>
@@ -685,8 +689,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySimilarItemsAPI");
-                console.log("ERROR");
-                console.log(xhttp.responseText);
+                jsLog("ERROR", xhttp.responseText);
             }
         }
     </script>
@@ -982,8 +985,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     }
                 }catch(e){
                     showErrorMessage("Malformed JSON returned from ebayFindingsApi");
-                    console.log("ERROR");
-                    console.log(xhttp.responseText);
+                    jsLog("ERROR", xhttp.responseText);
                 }
             }
         }, false);
@@ -1328,9 +1330,11 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
     <!-- JS to log details on the browsers console -->
     <script type="text/javascript">
         function jsLog(msg, obj) {
-            console.log(msg + " : ");
-            console.log(obj);
-            console.log("------------------------------------------------------------------------------------------\n");
+            if (DEBUG) {
+                console.log(msg + " : ");
+                console.log(obj);
+                console.log("------------------------------------------------------------------------------------------\n");
+            }
         }
     </script>
 
