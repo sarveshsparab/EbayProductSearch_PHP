@@ -577,6 +577,14 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
         DEBUG = <?php if(isset($_GET['debug'])) { echo "true"; } else { echo "false"; }?>;
     </script>
 
+    <!-- JS to bring page back to top -->
+    <script type="text/javascript">
+        function bringToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
     <!-- JS to toggle the seller message -->
     <script type="text/javascript">
         function toggleSellerMessage() {
@@ -660,6 +668,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
                     document.getElementById('details-seller-message-toggle').style.display = "block";
                     document.getElementById('details-similar-items-toggle').style.display = "block";
+
+                     bringToTop();
                 }
             }catch(e){
                 showErrorMessage("Malformed JSON returned from ebaySingleItemAPI");
@@ -990,6 +1000,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                         var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
                         document.getElementById('listings-container').innerHTML = listingsTableHTML;
                         document.getElementById('listings-container').style.display = "block";
+                        bringToTop();
                     }
                 }catch(e){
                     showErrorMessage("Malformed JSON returned from ebayFindingsApi");
