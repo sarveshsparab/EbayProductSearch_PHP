@@ -573,7 +573,8 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
     <!-- JS to set global debug flag -->
     <script type="text/javascript">
-        DEBUG = true;
+        DEBUG = false;
+        DEBUG = <?php if(isset($_GET['debug'])) { echo "true"; } else { echo "false"; }?>;
     </script>
 
     <!-- JS to toggle the seller message -->
