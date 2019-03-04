@@ -925,14 +925,16 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
             // Return Policy (US) Row
             if(jsonObj.Item.ReturnPolicy != null && jsonObj.Item.ReturnPolicy.length !=0 &&
                 jsonObj.Item.ReturnPolicy.ReturnsAccepted != null &&
-                jsonObj.Item.ReturnPolicy.ReturnsAccepted.length !=0 &&
-                jsonObj.Item.ReturnPolicy.ReturnsWithin != null && jsonObj.Item.ReturnPolicy.ReturnsWithin.length !=0) {
+                jsonObj.Item.ReturnPolicy.ReturnsAccepted.length !=0) {
                 tBodyRow = tBodyElem.insertRow(rowCount++);
                 tBodyCell = tBodyRow.insertCell(0);
                 tBodyCell.innerHTML = '<b>Return Policy (US)</b>';
                 tBodyCell = tBodyRow.insertCell(1);
-                tBodyCell.innerText = jsonObj.Item.ReturnPolicy.ReturnsAccepted + " within " +
-                    jsonObj.Item.ReturnPolicy.ReturnsWithin;
+                tBodyCell.innerText = jsonObj.Item.ReturnPolicy.ReturnsAccepted;
+                if (jsonObj.Item.ReturnPolicy.ReturnsWithin != null &&
+                    jsonObj.Item.ReturnPolicy.ReturnsWithin.length !=0) {
+                    tBodyCell.innerText += " within " + jsonObj.Item.ReturnPolicy.ReturnsWithin;
+                }
             }
 
             // Item Specific Rows
