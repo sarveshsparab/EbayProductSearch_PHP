@@ -8,6 +8,9 @@
 
 <?php
 
+syslog(LOG_INFO, 'POST Var dump:');
+syslog(LOG_INFO, implode(",", $_POST));
+
 // PHP to fetch from ebayFindingAPI [ postType = 1 ]
 if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
 
@@ -46,8 +49,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 1){
         $shipping_free = true;
     }
 
-    if (isset($_POST['ps-miles']) && !empty($_POST['ps-miles'])) {
-        $miles = $_POST['ps-miles'];
+    if (isset($_POST['ps-miles']) && $_POST['ps-miles']!='') {
+        if ($_POST['ps-miles'] > 4){
+            $miles = $_POST['ps-miles'];
+        } else {
+            $miles = 5;         // As per : https://developer.ebay.com/devzone/finding/CallRef/extra/fnditmsadvncd.rqst.tmfltr.nm.html
+        }
     }
     if(isset($_POST['ps-enable-nearby']) && !empty($_POST['ps-enable-nearby'])) {
         if (isset($_POST['ps-zip-code']) && !empty($_POST['ps-zip-code'])) {
