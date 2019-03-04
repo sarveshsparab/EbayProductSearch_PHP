@@ -1102,14 +1102,19 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 imageElem.setAttribute("src", jsonObj.galleryURL[0]);
                 cell.appendChild(imageElem);
             } else {
-                cell.innerHTML = "";
+                cell.innerHTML = 'N/A';
             }
         }
         function buildNameCell(cell, jsonObj) {
             let spanElem = document.createElement('span');
-            let titleElem = document.createTextNode(jsonObj["title"]);
-            spanElem.setAttribute("onclick", "fetchItemDetails("+jsonObj.itemId[0]+")");
-            spanElem.setAttribute("class", "clickableCell");
+            if (jsonObj.title == null || jsonObj.title.length == 0) {
+                var titleElem = document.createTextNode("N/A");
+            } else {
+                var titleElem = document.createTextNode(jsonObj["title"]);
+                spanElem.setAttribute("onclick", "fetchItemDetails("+jsonObj.itemId[0]+")");
+                spanElem.setAttribute("class", "clickableCell");
+
+            }
             spanElem.appendChild(titleElem);
             cell.appendChild(spanElem);
         }
