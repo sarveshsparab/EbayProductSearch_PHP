@@ -1181,6 +1181,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 document.getElementById('ps-zip-code').disabled = false;
             }else{
                 document.getElementById('ps-zip-code').disabled = true;
+                document.getElementById('ps-zip-code').value = '';
             }
         }
     </script>
