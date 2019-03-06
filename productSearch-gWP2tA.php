@@ -371,16 +371,22 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 display: none;
                 margin: 30px auto 50px;
                 width: 750px;
-                height: 20px;
+                height: 30px;
                 text-align: center;
                 font-weight: bold;
                 font-size: 16px;
                 background-color: #ffffff;
                 border: solid 1px #ddd;
-                outline-offset: 6px;
-                outline: solid 3px #ddd;
                 padding: 3px;
-                overflow: hidden;
+                overflow-x: scroll;
+                overflow-y: hidden;
+            }
+            .no-similar-notify-inner-div{
+                width: 1000px;
+                text-align: center;
+                border: 1px solid #ddd;
+                margin-top: 4px;
+                margin-left: 5px;
             }
 
             /* Toggling section's arrow CSS */
@@ -613,6 +619,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
 
             if(myDiv.style.display == "none" || myDiv.style.display == ""){
                 myDiv.style.display = "block";
+                document.getElementById('details-similar-items-container').scrollLeft = 0;
                 if(otherDiv.style.display == "block")
                     toggleArrowAndText(document.getElementById('details-seller-message-toggle'));
                 otherDiv.style.display = "none";
@@ -696,10 +703,16 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 if(!anySimilarItemsRetrieved(ebaySimilarItemsAPIResult)){
                     document.getElementById('details-similar-items-container').className += " no-similar-notify-div";
                     document.getElementById('details-similar-items-container').innerHTML = "";
+                    let divElem = document.createElement('div');
+                    divElem.setAttribute('class','no-similar-notify-inner-div');
                     let spanElem = document.createElement('span');
                     spanElem.innerText = "No Similar Item found.";
                     spanElem.style.padding = "1px 0px";
-                    document.getElementById('details-similar-items-container').appendChild(spanElem);
+                    spanElem.style.marginLeft = "-260px";
+                    divElem.appendChild(spanElem);
+                    divElem.scrollLeft = 0;
+                    document.getElementById('details-similar-items-container').appendChild(divElem);
+                    document.getElementById('details-similar-items-container').scrollLeft = 0;
                 } else {
                     var similarItemsTableHTML = buildSimilarItemsTable(ebaySimilarItemsAPIResult);
 
@@ -978,6 +991,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 hideSecondaryDivs();
                 resetArrows();
                 document.getElementById('details-similar-items-container').classList.remove('no-similar-notify-div');
+                document.getElementById('details-similar-items-container').innerHTML = "";
                 document.getElementById('details-seller-message-container').classList.remove('no-seller-notify-div');
 
                 var url = psForm.action;
