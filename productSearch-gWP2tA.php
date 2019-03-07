@@ -360,24 +360,24 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 width: 750px;
                 border: 1.5px solid #b4b4b4;
                 overflow-x: scroll;
-                scrollbar-width: none;
-                overflow: -moz-scrollbars-none;
-                -ms-overflow-style: none;
+                /*scrollbar-width: none;*/
+                /*overflow: -moz-scrollbars-none;*/
+                /*-ms-overflow-style: none;*/
             }
-            .details-similar-items::-webkit-scrollbar {
-                width: 0 !important
-            }
+            /*.details-similar-items::-webkit-scrollbar {*/
+                /*width: 0 !important*/
+            /*}*/
             .no-similar-notify-div{
                 display: none;
                 margin: 30px auto 50px;
                 width: 750px;
-                height: 30px;
+                /*height: 30px;*/
                 text-align: center;
                 font-weight: bold;
                 font-size: 16px;
                 background-color: #ffffff;
                 border: solid 1px #ddd;
-                padding: 3px;
+                padding: 3px 3px 6px;
                 overflow-x: scroll;
                 overflow-y: hidden;
             }
