@@ -736,7 +736,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     imageElem.setAttribute("src", dataCols[c].imageURL);
                     tBodyCell.appendChild(imageElem);
                 } else {
-                    tBodyCell.innerText = '';
+                    tBodyCell.innerText = 'N/A';
                 }
                 tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
             }
@@ -753,7 +753,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     spanElem.appendChild(titleElem);
                     tBodyCell.appendChild(spanElem);
                 } else {
-                    tBodyCell.innerText = '';
+                    tBodyCell.innerText = 'N/A';
                 }
                 tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
             }
@@ -766,7 +766,7 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     tBodyCell.setAttribute("style", "border: 0;");
                     tBodyCell.innerHTML = "<b>$"+dataCols[c].buyItNowPrice.__value__+"</b>";
                 } else {
-                    tBodyCell.innerText = '';
+                    tBodyCell.innerText = 'N/A';
                 }
                 tBodyCell.setAttribute("style", "border: 0; text-align: center; vertical-align: middle;");
             }
