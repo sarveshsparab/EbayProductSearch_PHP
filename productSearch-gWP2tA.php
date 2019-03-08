@@ -360,13 +360,13 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 width: 750px;
                 border: 1.5px solid #b4b4b4;
                 overflow-x: scroll;
-                scrollbar-width: none;
-                overflow: -moz-scrollbars-none;
-                -ms-overflow-style: none;
+                /*scrollbar-width: none;*/
+                /*overflow: -moz-scrollbars-none;*/
+                /*-ms-overflow-style: none;*/
             }
-            .details-similar-items::-webkit-scrollbar {
-                width: 0 !important
-            }
+            /*.details-similar-items::-webkit-scrollbar {*/
+                /*width: 0 !important*/
+            /*}*/
             .no-similar-notify-div{
                 display: none;
                 margin: 30px auto 50px;
