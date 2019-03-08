@@ -997,7 +997,9 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                     jsLog("Ebay Findings API Response", ebayFindingsAPIResult);
 
                     if(!anyItemsRetrieved(ebayFindingsAPIResult)){
-                        showErrorMessage("No Records has been found");
+                        if(!isAnyEbayError(ebayFindingsAPIResult)){
+                            showErrorMessage("No Records has been found");
+                        }
                     } else {
                         var listingsTableHTML = buildListingsTable(ebayFindingsAPIResult);
                         document.getElementById('listings-container').innerHTML = listingsTableHTML;
@@ -1010,6 +1012,32 @@ else if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST["postType"] == 3) {
                 }
             }
         }, false);
+    </script>
+
+    <!-- JS to check if any specific eay error in-case of failure -->
+    <script type="text/javascript">
+        function isAnyEbayError(jsonObj) {
+            var anyEbayError = false;
+            if(jsonObj.findItemsAdvancedResponse[0].ack[0] == "Failure"){
+                if(jsonObj.findItemsAdvancedResponse[0].errorMessage !=null
+                    && jsonObj.findItemsAdvancedResponse[0].errorMessage.length !=0){
+                    if(jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error !=null
+                        && jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error.length !=0){
+                        if(jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error[0].errorId !=null
+                            && jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error[0].errorId.length !=0){
+                            if(jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error[0].errorId[0] == "18"){
+                                anyEbayError = true;
+                                showErrorMessage("Invalid postal code.");
+                            } else if(jsonObj.findItemsAdvancedResponse[0].errorMessage[0].error[0].errorId[0] == "36"){
+                                anyEbayError = true;
+                                showErrorMessage("Invalid keyword.");
+                            }
+                        }
+                    }
+                }
+            }
+            return anyEbayError;
+        }
     </script>
 
     <!-- JS to reset arrows to point downwards as default -->
